@@ -54,23 +54,24 @@ class User {
 
     // make a new recipe post (pass in everything needed for the constructor)
     // the user will actually have to fill out a form when making this which will connect to this
-    func make_post(title: String,
-                   ingredients: [String],
-                   description: String,
-                   cookTime: Int,
-                   servings: Int,
-                   tags: [String]) -> Recipe {
-        // create new recipe
-        let newPost = Recipe(author: self,
-                            title: title,
-                            ingredients: ingredients,
-                            description: description,
-                            cookTime: cookTime,
-                            servings: servings,
-                            tags: tags)
-        posts.append(newPost) // add new post to list
-        return newPost // return the post so that the user can see it right away
-    }
+//    func make_post(title: String,
+//                   ingredients: [String],
+//                   description: String,
+//                   cookTime: Int,
+//                   servings: Int,
+//                   tags: [String]) -> Recipe {
+//        // create new recipe
+//        let newPost = Recipe(author: self,
+//                            title: title,
+//                            ingredients: ingredients,
+//                            description: description,
+//                            cookTime: cookTime,
+//                            servings: servings,
+//                            typeTags: typeTags,
+//                            cuisineTags: cuisineTags)
+//        posts.append(newPost) // add new post to list
+//        return newPost // return the post so that the user can see it right away
+//    }
 
     // Like a post
     func add_like(to postToLike: Recipe) {

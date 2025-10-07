@@ -22,7 +22,8 @@ let recipe1: Recipe = .init(
     description: "GUANCIALE NYAM",
     cookTime: 12,
     servings: 24,
-    tags: ["Italian", "Pasta"]
+    typeTags: [.breakfast, .lunch],
+    cuisineTags: [.italian, .american]
 )
 
 let recipe2: Recipe = .init(
@@ -32,7 +33,8 @@ let recipe2: Recipe = .init(
     description: "JApan",
     cookTime: 12,
     servings: 24,
-    tags: ["Japanese", "Noodles"]
+    typeTags: [.breakfast, .lunch],
+    cuisineTags: [.italian, .american]
 )
 
 let users: [User] = [user1, user2]

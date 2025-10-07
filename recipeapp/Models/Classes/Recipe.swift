@@ -25,7 +25,10 @@ class Recipe: Post {
     var cookTime: Int // minutes
     var servings: Int
     
-    var tags: Set<String> // set implementation - previously was an array
+    // sets are good for this because we don't want duplicated tags
+    // set implementation - previously was an array
+    var typeTags: Set<TypeTags>
+    var cuisineTags: Set<CuisineTags>
     
     init(author: User,
          title: String,
@@ -33,7 +36,8 @@ class Recipe: Post {
          description: String,
          cookTime: Int,
          servings: Int,
-         tags: [String]) {
+         typeTags: Set<TypeTags>,
+         cuisineTags: Set<CuisineTags>) {
         
         self.author = author
         self.title = title
@@ -41,9 +45,20 @@ class Recipe: Post {
         self.description = description
         self.cookTime = cookTime
         self.servings = servings
-        self.tags = Set(tags)
+        self.typeTags = typeTags
+        self.cuisineTags = cuisineTags
         self.likes = []
         self.comments = []
+        // for each tag in self.tags,
+        // check if the dictionary exists at that key, if not create new key and initialize at null,
+        // if it exists, append this recipe (self) to the key
+        for tag in self.typeTags {
+            recipesByTypeTag[tag, default: []].append(self)
+        }
+        for tag in self.cuisineTags {
+            recipesByCuisineTag[tag, default: []].append(self)
+        }
+        // I'm seeing that some developers prefer to separate construction from registration, so potentially in the future I'll make a register() method for this tag filter stuff
     }
     
     // setters
@@ -58,7 +73,7 @@ class Recipe: Post {
     
     func changeServings(newServings: Int) { self.servings = newServings }
     
-    func changeTags(newTags: [String]) { self.tags = Set(newTags) }
+//    func changeTags(newTags: [String]) { self.tags = Set(newTags) }
     
     func changeContent(newContent: String) { self.content = newContent }
     
@@ -74,7 +89,7 @@ class Recipe: Post {
     
     func getServings() -> Int { return servings }
     
-    func getTags() -> Set<String> { return tags }
+//    func getTags() -> Set<String> { return tags }
     
     func getContent() -> String { return content }
     

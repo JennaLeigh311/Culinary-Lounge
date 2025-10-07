@@ -1,11 +1,11 @@
 For HW 3:
 -
 
-~~* Make sure that everything follows the MVVM standard~~
-~~* Bottom Menu varied for different types of users (guest vs user)~~
+* ~~ Make sure that everything follows the MVVM standard~~
+* ~~ Bottom Menu varied for different types of users (guest vs user)~~
 * Learn about Combine for state management
 * Learn more about LazyVStack and how I can impement it properly
-~~* Implement lambda functions (aka closures)~~
+* ~~ Implement lambda functions (aka closures)~~
 * Actually finish the implementation of the collections
 * Comment everything
 * OPTIONAL: continue working on getting the database working with the UI
