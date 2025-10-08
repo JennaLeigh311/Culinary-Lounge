@@ -25,10 +25,11 @@ final class SignInPageViewModel : ObservableObject {
     // function that checks if password is correct
     
     func signIn() async {
-        isSigningIn = true          // button disabled
+        isSigningIn = true
         errorMessage = nil
         signInState = .notAttempted
 
+        
         guard let url = URL(string: "\(baseURL)/login") else { return }
 
         var request = URLRequest(url: url)

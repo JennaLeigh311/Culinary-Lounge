@@ -52,28 +52,30 @@ class User {
     
     func getComments() -> [Comment] { return comments }
 
-    // make a new recipe post (pass in everything needed for the constructor)
-    // the user will actually have to fill out a form when making this which will connect to this
-//    func make_post(title: String,
-//                   ingredients: [String],
-//                   description: String,
-//                   cookTime: Int,
-//                   servings: Int,
-//                   tags: [String]) -> Recipe {
-//        // create new recipe
-//        let newPost = Recipe(author: self,
-//                            title: title,
-//                            ingredients: ingredients,
-//                            description: description,
-//                            cookTime: cookTime,
-//                            servings: servings,
-//                            typeTags: typeTags,
-//                            cuisineTags: cuisineTags)
-//        posts.append(newPost) // add new post to list
-//        return newPost // return the post so that the user can see it right away
-//    }
+//     make a new recipe post (pass in everything needed for the constructor)
+//     the user will actually have to fill out a form when making this which will connect to this
+    func make_post( title: String,
+                   ingredients: [String],
+                   description: String,
+                   cookTime: Int,
+                   servings: Int,
+                   typeTags: Set<TypeTags>,
+                   cuisineTags: Set<CuisineTags> ) -> Recipe {
+        
+        // create new recipe
+        let newPost = Recipe(author: self,
+                            title: title,
+                            ingredients: ingredients,
+                            description: description,
+                            cookTime: cookTime,
+                            servings: servings,
+                            typeTags: typeTags,
+                            cuisineTags: cuisineTags)
+        posts.append(newPost) // add new post to list
+        return newPost // return the post so that the user can see it right away
+    }
 
-    // Like a post
+    // Like a post - array implementation but this should become a set in the future
     func add_like(to postToLike: Recipe) {
         // Check if this user already liked the post will be implemented later
         let like = Like(author: self, post: postToLike) // call "like" constructor

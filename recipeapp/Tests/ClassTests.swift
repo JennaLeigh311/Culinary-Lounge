@@ -31,7 +31,8 @@ func runUnitTests() {
                                 description: "Fast and easy when you don't have time to boil water",
                                 cookTime: 20,
                                 servings: 2,
-                                tags: ["Italian", "Quick"])
+                                typeTags: [.breakfast],
+                                cuisineTags: [.italian])
     
     print("jenna made a post:")
     print("Title: \(recipe1.getTitle())")

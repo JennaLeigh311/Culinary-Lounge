@@ -9,7 +9,9 @@ import Foundation
 
 // I'll implement recipe now but "reel" later when I actually need it,
 // because I might change my mind on it depending on how hard it is
-class Recipe: Post {
+
+// To use Recipe in a set I need it to conform to Hashable
+class Recipe: Post, Hashable {
     let id = UUID()
     let datePosted = Date()
     
@@ -95,10 +97,17 @@ class Recipe: Post {
     
     // I had add like and add comment here but I changed my mind and I'll just do all that in User
     
-//    func addRecipe(_ recipe: Recipe) {
-//        for tag in recipe.tags {
-//            recipesByTypeTag[Tyoetag, default: []].append(recipe)
-//        }
-//    }
+    
+    // these are apparently needed for this class to conform to the hashable protocol 
+    
+    // defines what it means for two Recipes to be equal
+    static func == (lhs: Recipe, rhs: Recipe) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    // this is used to generate a unique key - don't ask me I don't understand this yet, I'll have to learn about it later
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
     
 }

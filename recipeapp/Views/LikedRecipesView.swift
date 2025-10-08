@@ -17,7 +17,7 @@ struct LikedRecipesView: View {
             FiltersView()
             ScrollView {
                 LazyVStack (spacing: 15){
-                    RecipeCardView(recipe: recipe1)
+//                    RecipeCardView(recipe: recipe1)
                 
                 }
             }

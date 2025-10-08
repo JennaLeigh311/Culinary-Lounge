@@ -22,7 +22,7 @@ struct RecipeCardView: View {
             
             Text(recipe.title)
                 .font(.headline)
-            Text("Cooking Time: \(recipe.cookTime) min")
+            Text("Description: \(recipe.description)")
                 .font(.subheadline)
         }
         .padding()

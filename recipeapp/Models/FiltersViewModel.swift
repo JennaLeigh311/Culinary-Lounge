@@ -21,6 +21,15 @@ final class FiltersViewModel: ObservableObject {
     let availableTypeTags = TypeTags.allCases
     let availableCuisneTags = CuisineTags.allCases
     
+    // where all the current selected recipes will go
+    @Published var filteredRecipes: [Recipe] = []
+    
+    // make sure that filterRecipes() is called at initialization so that the initial view has a default list of recipe cards (otherwise it would be empty and render an empty recipe card page)
+    init() {
+        filterRecipes()
+        print("Initial filteredRecipes: \(filteredRecipes.map { $0.title })") // printing for debugging
+    }
+    
     func toggleTypesList() {
         showTypesList.toggle()
         showCuisinesList = false // this is to automatically close the other dropdown
@@ -34,11 +43,31 @@ final class FiltersViewModel: ObservableObject {
     func select(type: TypeTags) {
         selectedTypeTag = type
         showTypesList = false
+        filterRecipes()
     }
     
     func select(cuisine: CuisineTags) {
         selectedCuisineTag = cuisine
         showCuisinesList = false
+        filterRecipes()
     }
+    
+    func filterRecipes() {
+        // add the values at that key (or empty)
+        let typeMatches = recipesByTypeTag[selectedTypeTag] ?? []
+        let cuisineMatches = recipesByCuisineTag[selectedCuisineTag] ?? []
+        
+        let typeSet = Set(typeMatches) // sets are needed here so I can take the .intersection later because it doesn;t work on arrays
+        let cuisineSet = Set(cuisineMatches)
+        
+        // debugging!
+        print("Type matches (\(selectedTypeTag)): \(typeMatches.map { $0.title })")
+        print("Cuisine matches (\(selectedCuisineTag)): \(cuisineMatches.map { $0.title })")
+        
+        // combine both sets using intersection (only want the recipes that match on both filters
+        filteredRecipes = Array(typeSet.intersection(cuisineSet))
+        print("Updated filteredRecipes: \(filteredRecipes.map { $0.title })") // debugging printing
+
+        }
     
 }

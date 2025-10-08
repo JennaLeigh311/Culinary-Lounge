@@ -7,6 +7,6 @@
 
 import Foundation
 
-var recipesByTypeTag: [TypeTags: [Recipe]] = [:] // dictionary implementation - shouldn't this be a global variable?
+var recipesByTypeTag: [TypeTags: [Recipe]] = [:] // dictionary implementation - global varoable
 
 var recipesByCuisineTag: [CuisineTags: [Recipe]] = [:]

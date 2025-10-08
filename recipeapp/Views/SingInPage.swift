@@ -34,18 +34,15 @@ struct SignInView: View {
                 // Sign-in form
                 VStack(spacing: 16) {
                     // now one thing I don't get is why not every area in the rectangle is clickable
-                    // TextField is ...
                     TextField("Email", text: $viewModel.email)
                         .padding(10)
                         .background(Color(.white))
                         .cornerRadius(18)
-                        // overlay is here for ...
                         .overlay(
                             RoundedRectangle(cornerRadius: 18)
                                 .stroke(Color.gray, lineWidth: 1)
                         )
                     
-                    // SecureField is ...
                     SecureField("Password", text: $viewModel.password)
                         .padding(10)
                         .background(Color(.white))
@@ -56,7 +53,6 @@ struct SignInView: View {
                         )
                     
                     Button("Sign In") {
-                        // task is ....
                         Task { viewModel.signIn() }
                     }
                     .padding()
