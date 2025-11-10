@@ -11,22 +11,18 @@ import SwiftUI
 @MainActor
 final class SignInPageViewModel : ObservableObject {
     @Published var email: String = ""
+    @Published var loggedInUser: User?
     @Published var password: String = ""
-
     @Published var signInState: SignInState = .notAttempted
-    @Published var errorMessage: String?
     
-    @Published var isSigningIn: Bool = false
-    
-    let baseURL = "http://localhost:8080/users" // update with your backend URL
+    let baseURL = "http://localhost:8080/users"
 
     // function that checks if email is correct
     
     // function that checks if password is correct
     
     func signIn() async {
-        isSigningIn = true
-        errorMessage = nil
+        loggedInUser = nil
         signInState = .notAttempted
 
         
@@ -46,14 +42,11 @@ final class SignInPageViewModel : ObservableObject {
                 signInState = .success
             } else {
                 signInState = .failed
-                errorMessage = "Invalid credentials"
             }
         } catch {
             signInState = .failed
-            errorMessage = error.localizedDescription
         }
 
-        isSigningIn = false          // button re-enabled
     }
 
     

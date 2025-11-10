@@ -18,8 +18,8 @@ struct HomeView: View {
 
             // a scrollable view
             ScrollView {
-                // in the future I need to have some logic for this to choose which ones to show (based on tags)
-                // and also iterate through them automatically not manually
+            // in the future I need to have some logic for this to choose which ones to show (based on tags)
+            // and also iterate through them automatically not manually
                 LazyVStack (spacing: 15){
                     // render the recipe card for each recipe that's selected
                     ForEach(filtersViewModel.filteredRecipes, id: \.id) { recipe in

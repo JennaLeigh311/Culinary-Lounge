@@ -24,6 +24,7 @@ struct RecipeCardView: View {
                 .font(.headline)
             Text("Description: \(recipe.description)")
                 .font(.subheadline)
+            
         }
         .padding()
         .frame(maxWidth: 300, minHeight: 200)

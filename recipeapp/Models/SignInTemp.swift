@@ -16,10 +16,11 @@ final class SignInTempViewModel: ObservableObject {
 
     // Users already created statically in your app
     let users: [User]
-    
+
     init(allUsers: [User]) {
         self.users = allUsers
     }
+
 
     func signIn() {
         // Reset previous state
