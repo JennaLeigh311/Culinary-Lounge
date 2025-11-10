@@ -27,7 +27,7 @@ struct AuthenticationController: RouteCollection {
 
     func login(req: Request) async throws -> TokenResponse {
         let login = try req.content.decode(LoginRequest.self)
-        // Validate credentials (example pseudocode):
+
         guard let user = try await User.query(on: req.db)
             .filter(\.$username == login.username)
             .first(),
