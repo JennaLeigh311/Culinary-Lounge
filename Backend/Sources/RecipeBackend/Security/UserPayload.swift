@@ -1,44 +1,51 @@
 //
-//  UserPayload.swift
+//  VerifyToken.swift
 //  RecipeBackend
 //
-//  Created by Jenna Bunescu on 11/9/25.
+//  Created by Jenna Bunescu on 11/10/25.
 //
 
-import JWTKit
 import Vapor
+import JWT
 
-// JWT payload structure
-// Source: https://docs.vapor.codes/security/jwt/
-struct UserPayload: JWTPayload {
-    // Maps the longer Swift property names to the
-    // shortened keys used in the JWT payload.
-    enum CodingKeys: String, CodingKey {
-        case subject = "sub"
-        case expiration = "exp"
-        case isAdmin = "admin"
+struct UserPayload: JWTPayload, Authenticatable {
+    var sub: SubjectClaim  // email from Go token
+    var iss: IssuerClaim   // issuer
+    var aud: AudienceClaim  // role
+    var exp: ExpirationClaim // expiration
+    var iat: IssuedAtClaim // issued at
+
+    func verify(using signer: JWTSigner) throws {
+        try exp.verifyNotExpired()  // check expiration
+
+        if iat.value > Date() {
+            throw JWTError.claimVerificationFailure(
+                name: "iat",
+                reason: "Token issued in the future"
+            )
+        }
+        
+        guard iss.value == "Authentication" else {
+            throw JWTError.claimVerificationFailure(name: "iss", reason: "Invalid issuer")
+        }
+        
+        // Check audience (role) is valid
+        let allowedRoles = ["user", "admin"]
+        guard allowedRoles.contains(aud.value) else {
+            throw JWTError.claimVerificationFailure(name: "aud", reason: "Invalid role")
+        }
+
+        // Optionally: check sub is a valid email format
+        guard sub.value.contains("@") else {
+            throw JWTError.claimVerificationFailure(name: "sub", reason: "Invalid email")
+        }
+        
     }
-
-    // The "sub" (subject) claim identifies the principal that is the
-    // subject of the JWT.
-    var subject: SubjectClaim
-
-    // The "exp" (expiration time) claim identifies the expiration time on
-    // or after which the JWT MUST NOT be accepted for processing.
-    var expiration: ExpirationClaim
-
-    // Custom data.
-    // If true, the user is an admin.
-    var isAdmin: Bool
-
-    // Run any additional verification logic beyond
-    // signature verification here.
-    // Since we have an ExpirationClaim, we will
-    // call its verify method.
-    func verify(using signer: JWTSigner) throws { // had to use ChatGPT to ask why it was giving my an error because this code is straight from the documentation so it told me to slightly change this function to not be async and also use JWTSigner instead of JWTAlgorithm, without that it doesn't conform to the JWTPayload protocol. I looked at this to confirm https://api.vapor.codes/jwtkit/documentation/jwtkit/jwtalgorithm. I'm a little confused but ok.
-        try self.expiration.verifyNotExpired()
-    }
-    
-    // I'm convinced that the documentation for both Vapor and JWTKit are outdated... I should've known that I should do my backend in a different language... LOL
-
 }
+//
+//// Example using a RouteProtector
+//let protectedRoute = routes.grouped(User.authenticator(), User.guardMiddleware())
+//protectedRoute.get("protected") { req async throws -> String in
+//    let user = try req.auth.require(User.self)
+//    return "Welcome, \(user.id)!"
+//}
