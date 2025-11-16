@@ -11,12 +11,15 @@ import Fluent
 struct LikeController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let likes = routes.grouped("likes")
+        let publicProtected = likes.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["guest","user","admin"]))
+        let userProtected = likes.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["user","admin"]))
 
-        likes.get(use: self.index) // GET /likes -> list all likes
-        likes.post(use: self.create) // POST /likes -> create a new like
+        publicProtected.get(use: self.index) // GET /likes -> list all likes [PUBLIC]
+        userProtected.post(use: self.create) // POST /likes -> create a new like [USER OR ADMIN]
         likes.group(":likeID") { like in
-            like.delete(use: delete) // DELETE /likes/:likeID -> delete a like
-            like.get(use: getOne)    // GET /likes/:likeID -> get a single like
+            let ownerProtected = like.grouped(JWTMiddleware(), OwnerMiddleware(resourceOwnerIDKey: "likeID"))
+            ownerProtected.delete(use: delete) // DELETE /likes/:likeID -> delete a like [USER OR ADMIN]
+            ownerProtected.get(use: getOne)    // GET /likes/:likeID -> get a single like [PUBLIC]
         }
     }
 

@@ -42,6 +42,9 @@ struct UserPayload: JWTPayload, Authenticatable {
         
     }
 }
+
+// So after implementing this, I was at a loss for what I needed to do next, and I felt like I had to resort to ChatGPT to guide me what to do next. It told me that I need to make a JWTMiddleware. I will make sure I understand what it does.
+
 //
 //// Example using a RouteProtector
 //let protectedRoute = routes.grouped(User.authenticator(), User.guardMiddleware())

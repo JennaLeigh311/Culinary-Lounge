@@ -11,12 +11,16 @@ import Fluent
 struct CommentController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let comments = routes.grouped("comments")
+        let publicProtected = comments.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["guest","user","admin"]))
+        let userProtected = comments.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["user","admin"]))
 
-        comments.get(use: self.index) // GET /comments -> list all comments
-        comments.post(use: self.create) // POST /comments -> create a new comment
+        publicProtected.get(use: self.index) // GET /comments -> list all comments [PUBLIC]
+        userProtected.post(use: self.create) // POST /comments -> create a new comment [NEEDS TO BE USER OR ADMIN]
         comments.group(":commentID") { comment in
-            comment.delete(use: delete) // DELETE /comments/:commentID -> delete a comment
-            comment.get(use: getOne)    // GET /comments/:commentID -> get a single comment
+            
+            let ownerProtected = comment.grouped(JWTMiddleware(), OwnerMiddleware(resourceOwnerIDKey: "commentID"))
+            ownerProtected.delete(use: delete) // DELETE /comments/:commentID -> delete a comment [NEEDS TO BE USER OR ADMIN -> IF USER, COMMENT NEEDS TO BELONG TO USER]
+            publicProtected.get(use: getOne)    // GET /comments/:commentID -> get a single comment [PUBLIC]
         }
     }
 

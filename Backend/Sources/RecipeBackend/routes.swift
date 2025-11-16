@@ -3,6 +3,8 @@ import Vapor
 
 
 func routes(_ app: Application) throws {
+    let protected = app.grouped(JWTMiddleware())
+    
     app.get { req async in
         "It works!"
     }
@@ -35,13 +37,5 @@ func routes(_ app: Application) throws {
         return "Hello, \(name)!"
     }
     
-    app.post("login") { req async throws -> [String: String] in
-        let payload = UserPayload(
-            subject: "vapor",
-            expiration: .init(value: .distantFuture),
-            isAdmin: true
-        )
-        return try ["token": req.jwt.sign(payload)]
-    }
-
+    
 }

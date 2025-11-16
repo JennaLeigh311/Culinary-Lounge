@@ -14,7 +14,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// Add a new global variable for the secret key
+// Add a new global variable for the secret key - this should go in .env later
 var secretKey = []byte("your-secret-key")
 
 // Function to create JWT tokens with claims
