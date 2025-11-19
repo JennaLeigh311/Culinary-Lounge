@@ -69,10 +69,13 @@ func main() {
 
 		c.JSON(http.StatusOK, gin.H{
 			"token": tokenString,
+			"id": user.ID,
+			"username": user.Username,
 			"email": user.Email,
 			"role":  user.Role,
+			"created_at": user.CreatedAt,
 		})
 	})
 
-	router.Run(":8080")
+	router.Run(":9090")
 }

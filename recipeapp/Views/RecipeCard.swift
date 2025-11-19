@@ -14,7 +14,7 @@ import SwiftUI
 // And using that struct along with a View to style different parts of the content in different ways
 
 struct RecipeCardView: View {
-    let recipe: Recipe // argument being passed in when the view is called
+    let recipe: RecipeDTO // argument being passed in when the view is called
     
     var body: some View{
 

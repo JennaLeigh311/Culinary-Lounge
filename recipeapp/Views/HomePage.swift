@@ -10,6 +10,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var filtersViewModel: FiltersViewModel // for filtering recipes
+    @StateObject private var recipesViewModel = RecipesViewModel()
 
     var body: some View{
         VStack (spacing: 15){
@@ -22,12 +23,17 @@ struct HomeView: View {
             // and also iterate through them automatically not manually
                 LazyVStack (spacing: 15){
                     // render the recipe card for each recipe that's selected
-                    ForEach(filtersViewModel.filteredRecipes, id: \.id) { recipe in
+                    ForEach(recipesViewModel.recipes) { recipe in
                         RecipeCardView(recipe: recipe)
                     }
                 }
             }
             BottomMenuView()
+        }
+        .onAppear {
+            
+            recipesViewModel.recipes = [] // clear any old data
+            recipesViewModel.fetchRecipe()
         }
     }
 }
