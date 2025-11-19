@@ -13,7 +13,8 @@ struct RecipeController: RouteCollection {
         let publicProtected = recipes.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["guest","user","admin"]))
         let userProtected = recipes.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["user","admin"]))
         
-        publicProtected.get(use: self.index) // GET /recipes -> list all recipes [PUBLIC]
+        recipes.get(use: self.index)
+//        publicProtected.get(use: self.index) // GET /recipes -> list all recipes [PUBLIC]
         userProtected.post(use: self.create) // POST /recipes -> create a new recipe [USER OR ADMIN]
         
         publicProtected.group(":recipeID") { recipe in
@@ -24,10 +25,9 @@ struct RecipeController: RouteCollection {
             recipe.get("comments", "count", use: getCommentCount) // GET /recipes/:recipeID/comments/count -> get comment count [PUBLIC]
         }
         
-        // SOURCE CHATGPT
         recipes.group(":recipeID") { recipe in
             let ownerProtected = recipe.grouped(JWTMiddleware(), OwnerMiddleware(resourceOwnerIDKey: "recipeID"))
-            ownerProtected.delete(use: delete)
+            ownerProtected.delete(use: delete) // DELETE /recipe/:recipeID -> deletes a recipe [USER who owns the recipe]
         }
         
         publicProtected.get("filter", "cuisine", ":cuisineTag", use: getAllCuisineTag) // GET /recipes/filter/cuisine/:cuisineTag -> gives all the recipes with a certain cuisine_tag [PUBLIC]

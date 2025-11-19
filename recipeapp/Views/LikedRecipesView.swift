@@ -12,7 +12,7 @@ import SwiftUI
 
 struct LikedRecipesView: View {
     @EnvironmentObject var signInViewModel: SignInTempViewModel
-    @StateObject private var mealViewModel = MealViewModel()
+    @StateObject private var recipesViewModel = RecipesViewModel()
     
     var body: some View{
         VStack (spacing: 15){
@@ -21,8 +21,8 @@ struct LikedRecipesView: View {
             ScrollView {
                 LazyVStack (spacing: 15){
                     
-                    ForEach(mealViewModel.meals) { meal in
-                        LikedRecipeCardView(recipe: meal)
+                    ForEach(recipesViewModel.recipes) { recipe in
+                        LikedRecipeCardView(recipe: recipe)
                     }
 
                 }
@@ -31,11 +31,9 @@ struct LikedRecipesView: View {
         }
         .background(Color.pink.opacity(0.3)) // also different background color just to make it more clear that they're different in the demo
         .onAppear {
-            let mealNames = ["Arrabiata", "Carbonara", "Sushi"]
-            mealViewModel.meals = [] // clear any old data
-            for name in mealNames {
-                mealViewModel.fetchRemoteData(for: name)
-            }
+            let recipeNames = ["Spam Bowl", "Rack of CHAMB", "Eclair"]
+            recipesViewModel.recipes = [] // clear any old data
+            recipesViewModel.fetchRecipe()
         }
     }
 }

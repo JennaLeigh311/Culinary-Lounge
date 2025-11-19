@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct LikedRecipeCardView: View {
-    let recipe: Meal // argument being passed in when the view is called
+    let recipe: RecipeDTO // argument being passed in when the view is called
     
     var body: some View{
 
         VStack() {
             
-            Text(recipe.strMeal)
+            Text(recipe.title)
                 .font(.headline)
-            Text(recipe.strCategory ?? "Unknown category")
+            Text(recipe.cuisine_tag)
                 .font(.subheadline)
             
         }

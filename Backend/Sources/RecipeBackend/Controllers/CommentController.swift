@@ -13,9 +13,10 @@ struct CommentController: RouteCollection {
         let comments = routes.grouped("comments")
         let publicProtected = comments.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["guest","user","admin"]))
         let userProtected = comments.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["user","admin"]))
+        let adminProtected = comments.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["admin"]))
 
-        publicProtected.get(use: self.index) // GET /comments -> list all comments [PUBLIC]
-        userProtected.post(use: self.create) // POST /comments -> create a new comment [NEEDS TO BE USER OR ADMIN]
+        adminProtected.get(use: self.index) // GET /comments -> list all comments [PUBLIC]
+        userProtected.post(use: self.create) // POST /comments -> create a new comment [USER OR ADMIN]
         comments.group(":commentID") { comment in
             
             let ownerProtected = comment.grouped(JWTMiddleware(), OwnerMiddleware(resourceOwnerIDKey: "commentID"))

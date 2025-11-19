@@ -6,6 +6,6 @@
 //
 
 
-struct UserDTO: Codable, Identifiable {
-//
-}
+//struct UserDTO: Codable, Identifiable {
+////
+//}
