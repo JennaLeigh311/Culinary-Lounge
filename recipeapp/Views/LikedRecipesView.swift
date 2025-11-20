@@ -30,7 +30,8 @@ struct LikedRecipesView: View {
             }
         }
         .background(Color.pink.opacity(0.3)) // also different background color just to make it more clear that they're different in the demo
-        .onAppear {
+        
+        .onAppear { // onAppear will cause problems
 
             usersViewModel.user_likes = [] // clear any old data
             usersViewModel.fetchLikes()

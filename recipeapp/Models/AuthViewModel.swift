@@ -12,9 +12,14 @@ import SwiftUI
 class AuthViewModel: ObservableObject {
     @Published var user: UserDTO? = nil
     @Published var token: String? = nil
+
+    @Published var signInState: SignInState = .notAttempted
+
     
     // Get all likes from user
     func login(email: String, password: String) {
+        signInState = .notAttempted
+        
         let url = URL(string: "http://127.0.0.1:9090/login/")!
         
         var request = URLRequest(url: url)
@@ -32,10 +37,12 @@ class AuthViewModel: ObservableObject {
         let task = URLSession.shared.dataTask(with: request){ data, response, error in
             if let error = error {
                 print("Error while fetching data:", error)
+                self.signInState = .failed
                 return
             }
             
             guard let data = data else {
+                self.signInState = .failed
                 return
             }
             
@@ -66,19 +73,17 @@ class AuthViewModel: ObservableObject {
                 }
                 
             } catch let jsonError {
+                self.signInState = .notAttempted
                 print("Failed to decode json", jsonError)
             }
         }
         
         task.resume()
+        self.signInState = .success
     }
     
-    // post a new recipe
-    
-    
-    // delete a recipe
-    
-    
-    //
+    func signup(email: String, password: String) {
+        
+    }
     
 }

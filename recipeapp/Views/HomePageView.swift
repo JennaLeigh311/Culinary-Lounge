@@ -12,7 +12,7 @@ struct HomeView: View {
     @EnvironmentObject var filtersViewModel: FiltersViewModel // for filtering recipes
     @StateObject private var recipesViewModel = RecipesViewModel()
 
-    var body: some View{
+    var body: some View {
         VStack (spacing: 15){
             TopBarView()
             FiltersView()
