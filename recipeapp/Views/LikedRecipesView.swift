@@ -28,7 +28,6 @@ struct LikedRecipesView: View {
 
                 }
             }
-            BottomMenuView()
         }
         .background(Color.pink.opacity(0.3)) // also different background color just to make it more clear that they're different in the demo
         .onAppear {

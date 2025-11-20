@@ -14,24 +14,21 @@ struct UserController: RouteCollection {
         let users = routes.grouped("users")
         // SOURCE CHATGPT
         let adminProtected = users.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["admin"]))
-        // SOURCE CHATGPT
-        let guestProtected = users.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["guest","admin"]))
 
         users.get(use: self.index) // GET /users -> list all users [ADMIN]
-        guestProtected.post(use: self.create) // POST /users -> create a new user [GUEST OR ADMIN]
+        users.post(use: self.create) // POST /users -> create a new user [PUBLIC but access is controlled by frontend]
         users.group(":userID") { user in
-            // SOURCE CHATPGT
-            let publicProtected = user.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["guest","user","admin"]))
+
             // SOURCE CHATGPT
             let ownerProtected = user.grouped(JWTMiddleware(), OwnerMiddleware(resourceOwnerIDKey: "userID"))
             
             ownerProtected.delete(use: delete) // DELETE /users/:userID -> delete a user [ADMIN OR USER IF DELETING OWN ACCOUNT]
-            publicProtected.get(use: getOne) // GET /users/:userID -> get a single user [PUBLIC]
-            publicProtected.get("recipes", "count", use: getRecipeCount) // GET /users/:userID/recipes/count -> get number of recipes posted by this user [PUBLIC]
+            users.get(use: getOne) // GET /users/:userID -> get a single user [PUBLIC]
+            user.get("recipes", "count", use: getRecipeCount) // GET /users/:userID/recipes/count -> get number of recipes posted by this user [PUBLIC]
             ownerProtected.get("likes", "count", use: getLikeCount) // GET /users/:userID/likes/count -> get number of likes given by this user [USER OR ADMIN]
 //            ownerProtected.get("likes", use: getLikes) // GET /users/:userID/likes -> get all liked recipes of user [USER OR ADMIN]
-            user.get("likes", use: getLikes) // GET /users/:userID/likes -> get all liked recipes of user [USER OR ADMIN]
-            ownerProtected.get("recipes", use: getRecipes) // GET /users/:userID/likes/count -> get all recipes posted by user [USER OR ADMIN]
+            ownerProtected.get("likes", use: getLikes) // GET /users/:userID/likes -> get all liked recipes of user [USER OR ADMIN]
+            user.get("recipes", use: getRecipes) // GET /users/:userID/recipes -> get all recipes posted by user [USER OR ADMIN]
         }
     }
 

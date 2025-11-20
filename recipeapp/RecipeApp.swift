@@ -31,9 +31,8 @@ struct RecipeApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                HomeView()
-                // HomeView (this should be changed later to a RootView)
-                   
+                BottomMenuView()
+
             }
             .environmentObject(signInViewModel) // declares that my sign in view model is an environment object that can be used for all the views inside
             .environmentObject(filtersViewModel)

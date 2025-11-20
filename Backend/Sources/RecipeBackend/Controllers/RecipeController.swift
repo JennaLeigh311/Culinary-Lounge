@@ -10,28 +10,29 @@ import Fluent
 struct RecipeController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let recipes = routes.grouped("recipes")
-        let publicProtected = recipes.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["guest","user","admin"]))
         let userProtected = recipes.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["user","admin"]))
+        let adminProtected = recipes.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["admin"]))
         
-        recipes.get(use: self.index)
-//        publicProtected.get(use: self.index) // GET /recipes -> list all recipes [PUBLIC]
+        recipes.get(use: self.index) // GET /recipes -> list all recipes [PUBLIC]
+
         userProtected.post(use: self.create) // POST /recipes -> create a new recipe [USER OR ADMIN]
         
-        publicProtected.group(":recipeID") { recipe in
+        recipes.group(":recipeID") { recipe in
             
-            recipe.delete(use: delete) // DELETE /recipes/:recipeID -> delete a recipe [USER OR ADMIN]
             recipe.get(use: getOne)    // GET /recipes/:recipeID -> get a single recipe [PUBLIC]
             recipe.get("likes", "count", use: getLikeCount) // GET /recipes/:recipeID/likes/count -> get like count [PUBLIC]
             recipe.get("comments", "count", use: getCommentCount) // GET /recipes/:recipeID/comments/count -> get comment count [PUBLIC]
         }
+        
+        // I might need an API that gives me all the comment IDs
         
         recipes.group(":recipeID") { recipe in
             let ownerProtected = recipe.grouped(JWTMiddleware(), OwnerMiddleware(resourceOwnerIDKey: "recipeID"))
             ownerProtected.delete(use: delete) // DELETE /recipe/:recipeID -> deletes a recipe [USER who owns the recipe]
         }
         
-        publicProtected.get("filter", "cuisine", ":cuisineTag", use: getAllCuisineTag) // GET /recipes/filter/cuisine/:cuisineTag -> gives all the recipes with a certain cuisine_tag [PUBLIC]
-        publicProtected.get("filter", "type", ":typeTag", use: getAllTypeTag) // GET /recipes/filter/type/:typeTag -> gives all the recipes with a certain type_tag [PUBLIC]
+        recipes.get("filter", "cuisine", ":cuisineTag", use: getAllCuisineTag) // GET /recipes/filter/cuisine/:cuisineTag -> gives all the recipes with a certain cuisine_tag [PUBLIC]
+        recipes.get("filter", "type", ":typeTag", use: getAllTypeTag) // GET /recipes/filter/type/:typeTag -> gives all the recipes with a certain type_tag [PUBLIC]
     }
     
     // handler to list all recipes

@@ -29,21 +29,19 @@ struct UserPayload: JWTPayload, Authenticatable {
             throw JWTError.claimVerificationFailure(name: "iss", reason: "Invalid issuer")
         }
         
-        // Check audience (role) is valid
+        // check role is valid
         let allowedRoles = ["user", "admin"]
         guard allowedRoles.contains(aud.value) else {
             throw JWTError.claimVerificationFailure(name: "aud", reason: "Invalid role")
         }
 
-        // Optionally: check sub is a valid email format
+        // check sub is a valid email format
         guard sub.value.contains("@") else {
             throw JWTError.claimVerificationFailure(name: "sub", reason: "Invalid email")
         }
         
     }
 }
-
-// So after implementing this, I was at a loss for what I needed to do next, and I felt like I had to resort to ChatGPT to guide me what to do next. It told me that I need to make a JWTMiddleware. I will make sure I understand what it does.
 
 //
 //// Example using a RouteProtector

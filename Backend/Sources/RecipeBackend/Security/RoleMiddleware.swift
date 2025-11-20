@@ -11,17 +11,20 @@ import Vapor
 import JWT
 
 
+//
 struct RoleMiddleware: AsyncMiddleware {
-    let allowedRoles: [String]
+    let allowedRoles: [String] // this will be passed into RoleMiddleware as an argument
 
+    // function called when request enters the middleware
     func respond(to req: Request, chainingTo next: any AsyncResponder) async throws -> Response {
-        let payload = try req.auth.require(UserPayload.self)
+
+        let payload = try req.auth.require(UserPayload.self) // get the UserPayload from the request
         
-        // Check if the JWT audience contains at least one of the allowed roles
+        // check if the JWT audience contains at least one of the allowed roles (payload.aud.value is an array representing the user's roles) and if it doesn't then throw error
         if !payload.aud.value.contains(where: { allowedRoles.contains($0) }) {
-            throw Abort(.forbidden, reason: "Insufficient permissions")
+            throw Abort(.forbidden, reason: "Insufficient permissions") // so .forbidden is a type of error with number 403
         }
         
-        return try await next.respond(to: req)
+        return try await next.respond(to: req) // allow the endpoint to be accessed if the user passed the check
     }
 }

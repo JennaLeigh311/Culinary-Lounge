@@ -41,6 +41,8 @@ func createToken(email, role string) (string, error) {
 func main() {
 	router := gin.Default()
 
+	// user sign up lives in Vapor. After user signs up they must go to the login route.
+
 	// user login route
 	router.POST("/login", func(c *gin.Context) {
 		var creds struct {
