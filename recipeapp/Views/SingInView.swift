@@ -9,8 +9,11 @@
 
 // https://medium.com/@jpmtech/swiftui-text-input-f9cae9eaca48
 
+// https://stackoverflow.com/questions/69002594/can-i-somehow-convert-bindingstring-to-string
+
 import SwiftUI
 import SwiftData
+
 enum SignInState {
     case notAttempted
     case success
@@ -18,7 +21,7 @@ enum SignInState {
 }
 
 struct SignInView: View {
-    @EnvironmentObject var creds: AuthCredsViewModel
+    @State var creds: Credentials
     @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
@@ -64,8 +67,8 @@ struct SignInView: View {
                     HStack {
                         Text("or")
                         NavigationLink("sign up") {
+                            
                             SignUpView()
-                                .environmentObject(creds)
                                 .environmentObject(authViewModel)
                         }
                     }

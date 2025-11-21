@@ -8,9 +8,15 @@
 import SwiftUI
 import SwiftData
 
+enum SignUpState {
+    case notAttempted
+    case success
+    case failed
+}
+
 struct SignUpView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var creds: AuthCredsViewModel
+    @State var creds = Credentials()
 
     var body: some View {
         // Sign-in form

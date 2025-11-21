@@ -16,7 +16,6 @@ let logger = Logger(subsystem: "com.jenna.recipeapp", category: "network")
 struct BottomMenuView: View {
     // We need access to this viewModel which holds the signInState
     @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var creds: AuthCredsViewModel
     
     var body: some View{
         TabView {
@@ -40,7 +39,6 @@ struct BottomMenuView: View {
                 SignInView() .tabItem {
                     Label("Sign In", systemImage: "person.crop.circle.badge.plus")
                 }.environmentObject(authViewModel)
-                    .environmentObject(creds)
                 
                 
             }
