@@ -20,10 +20,15 @@ enum SignInState {
     case failed
 }
 
+struct Credentials {
+    var email: String = ""
+    var password: String = ""
+}
+
 struct SignInView: View {
-    @State var creds: Credentials
+    @State var creds: Credentials = Credentials()
     @EnvironmentObject var authViewModel: AuthViewModel
-    
+
     var body: some View {
         VStack(spacing: 16) {
             // check the sign in state

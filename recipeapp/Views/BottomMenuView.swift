@@ -29,6 +29,9 @@ struct BottomMenuView: View {
                 LikedRecipesView() .tabItem {
                     Label("Likes", systemImage: "heart.circle.fill")
                 }
+                UserProfileView() .tabItem {
+                    Label("Profile", systemImage: "person.fill")
+                }
                 
                 // when the user either hasn't attempted sign in or failed their attempt
             } else {

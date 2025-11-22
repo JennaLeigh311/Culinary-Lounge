@@ -74,7 +74,7 @@ class AuthViewModel: ObservableObject {
                 }
                 
             } catch let jsonError {
-                self.signInState = .notAttempted
+
                 print("Failed to decode json", jsonError)
             }
         }
@@ -120,6 +120,8 @@ class AuthViewModel: ObservableObject {
                 let decodedData = try decoder.decode(SignupResponse.self, from: data)
                 // Assigning the data to the array
                 DispatchQueue.main.async { // When the data is ready, go back to the main thread, and update the UI safely.
+                    print(decodedData)
+                    
                 }
                 
             } catch let jsonError {

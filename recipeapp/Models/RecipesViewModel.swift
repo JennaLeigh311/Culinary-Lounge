@@ -5,6 +5,8 @@
 //  Created by Jenna Bunescu on 11/18/25.
 //
 
+// source: https://anjalijoshi2426.medium.com/fetch-and-display-api-data-on-list-using-swiftui-13fff61e8826
+
 import Foundation
 import SwiftUI
 

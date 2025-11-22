@@ -12,13 +12,6 @@ class UsersViewModel: ObservableObject {
     @Published var user = UserDTO()
     @Published var user_likes: [RecipeDTO] = []
     
-    // testing with a known user id
-    init() {
-        self.user = UserDTO(
-            id: UUID(uuidString: "50F77B98-AF0C-11F0-8459-6192B6DB2834")!
-        )
-    }
-    
     // Get all likes from user
     func fetchLikes() {
         let url = URL(string: "http://127.0.0.1:8080/users/\(user.id)/likes")!

@@ -1,16 +1,17 @@
 //
-//  LikedRecipesView.swift
+//  UserProfileView.swift
 //  recipeapp
 //
-//  Created by Jenna Bunescu on 10/6/25.
+//  Created by Jenna Bunescu on 11/21/25.
 //
+
 
 import SwiftUI
 
 // temporary view
 // the only difference is the icon for now
 
-struct LikedRecipesView: View {
+struct UserProfileView: View {
     @EnvironmentObject var signInViewModel: SignInTempViewModel
     @StateObject private var recipesViewModel = RecipesViewModel()
     @StateObject private var usersViewModel = UsersViewModel()
