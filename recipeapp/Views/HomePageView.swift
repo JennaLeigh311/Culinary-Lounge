@@ -10,7 +10,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var filtersViewModel: FiltersViewModel // for filtering recipes
-    @StateObject private var recipesViewModel = RecipesViewModel()
+    @EnvironmentObject var recipesViewModel: RecipesViewModel
     @State private var searchText = ""
     
     var body: some View {

@@ -11,12 +11,13 @@ import SwiftUI
 // the only difference is the icon for now
 
 struct LikedRecipesView: View {
-    @EnvironmentObject var signInViewModel: SignInTempViewModel
-    @StateObject private var recipesViewModel = RecipesViewModel()
-    @StateObject private var usersViewModel = UsersViewModel()
+    @EnvironmentObject var recipesViewModel: RecipesViewModel
+    @EnvironmentObject var usersViewModel: UsersViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View{
         VStack (spacing: 15){
+            Text(authViewModel.user.username)
             SearchBar(text: .constant(""))
                 .padding(.horizontal)
                 .padding(.top, 30)
@@ -34,9 +35,9 @@ struct LikedRecipesView: View {
         .background(Color.pink.opacity(0.3)) // also different background color just to make it more clear that they're different in the demo
         
         .onAppear { // onAppear will cause problems
-
+            
             usersViewModel.user_likes = [] // clear any old data
-//            usersViewModel.fetchLikes()
+            usersViewModel.fetchLikes()
         }
     }
 }

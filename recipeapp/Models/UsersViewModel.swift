@@ -9,11 +9,16 @@ import Foundation
 import SwiftUI
 
 class UsersViewModel: ObservableObject {
-    @Published var user = UserDTO()
     @Published var user_likes: [RecipeDTO] = []
+    @ObservedObject var user: User
+    
+    init(user: User) {
+        self.user = user
+    }
     
     // Get all likes from user
     func fetchLikes() {
+        print("User: \(user.id), \(user.username), \(user.email), \(user.role)")
         let url = URL(string: "http://127.0.0.1:8080/users/\(user.id)/likes")!
         
         var request = URLRequest(url: url)

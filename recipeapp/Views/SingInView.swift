@@ -36,10 +36,8 @@ struct SignInView: View {
             // if signed in, display welcome message
             // technically I'll just probably have this go to the home screen automatically right after the welcome message but for now it's fine
             case .success:
-                if let user = authViewModel.user {
-                    Text("Welcome \(user.username)!")
+                Text("Welcome \(authViewModel.user.username)!")
                         .font(.title)
-                }
             case .failed:
                 VStack(spacing: 16) {
                     // now one thing I don't get is why not every area in the rectangle is clickable

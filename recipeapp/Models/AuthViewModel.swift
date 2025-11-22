@@ -10,15 +10,17 @@ import Foundation
 import SwiftUI
 
 class AuthViewModel: ObservableObject {
-    
-    @Published var user: UserDTO? = nil
-    @Published var token: String? = nil
+    @ObservedObject var user: User
     @Published var signInState: SignInState = .notAttempted
     @Published var signUpState: SignUpState = .notAttempted
 
+    init(user: User) {
+        self.user = user
+    }
     
     // Get all likes from user
     func login(email: String, password: String) {
+        
         signInState = .notAttempted
         
         let url = URL(string: "http://127.0.0.1:9090/login")!
@@ -33,7 +35,7 @@ class AuthViewModel: ObservableObject {
             "password": password
         ]
         
-        request.httpBody = try? JSONEncoder().encode(creds) // https://stackoverflow.com/questions/51614757/vapor3-json-encode-decode
+        request.httpBody = try? JSONEncoder().encode(creds)
 
         let task = URLSession.shared.dataTask(with: request){ data, response, error in
             if let error = error {
@@ -64,13 +66,11 @@ class AuthViewModel: ObservableObject {
                 let decodedData = try decoder.decode(LoginResponse.self, from: data)
                 // Assigning the data to the array
                 DispatchQueue.main.async { // When the data is ready, go back to the main thread, and update the UI safely.
-                    self.token = decodedData.token
-                    self.user = UserDTO(
-                        id: decodedData.id,
-                        username: decodedData.username,
-                        email: decodedData.email,
-                        role: decodedData.role,
-                    )
+                    self.user.id = decodedData.id
+                    self.user.username = decodedData.username
+                    self.user.email = decodedData.email
+                    self.user.role = decodedData.role
+                    self.user.token = decodedData.token
                     self.signInState = .success
                 }
                 

@@ -12,9 +12,9 @@ import SwiftUI
 // the only difference is the icon for now
 
 struct UserProfileView: View {
-    @EnvironmentObject var signInViewModel: SignInTempViewModel
-    @StateObject private var recipesViewModel = RecipesViewModel()
-    @StateObject private var usersViewModel = UsersViewModel()
+    @EnvironmentObject var recipesViewModel: RecipesViewModel
+    @EnvironmentObject var usersViewModel: UsersViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View{
         VStack (spacing: 15){
