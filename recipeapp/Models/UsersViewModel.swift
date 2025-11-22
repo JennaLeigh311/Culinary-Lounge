@@ -25,15 +25,18 @@ class UsersViewModel: ObservableObject {
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
+        
         let task = URLSession.shared.dataTask(with: request){ data, response, error in
             if let error = error {
                 print("Error while fetching data:", error)
                 return
             }
+    
             
             guard let data = data else {
                 return
             }
+            
             
             do {
                 let decoder = JSONDecoder()
@@ -42,9 +45,9 @@ class UsersViewModel: ObservableObject {
                 let decodedData = try decoder.decode([RecipeDTO].self, from: data)
                 // Assigning the data to the array
                 DispatchQueue.main.async { // When the data is ready, go back to the main thread, and update the UI safely.
-                    
                     self.user_likes.append(contentsOf: decodedData)
                 }
+                
                 
             } catch let jsonError {
                 print("Failed to decode json", jsonError)
@@ -53,6 +56,8 @@ class UsersViewModel: ObservableObject {
         
         task.resume()
     }
+    
+    
     
     // post a new recipe
     

@@ -45,8 +45,8 @@ struct FiltersView: View {
                     }
                     // styling
                     .padding()
-                    .frame(maxWidth: 150, minHeight: 50)
-                    .background(Color.orange.opacity(0.8))
+                    .frame(maxWidth: 150, minHeight: 20)
+                    .background(Color.gray.opacity(0.8))
                     .foregroundColor(.white)
                     .cornerRadius(18)
                 }
@@ -61,8 +61,8 @@ struct FiltersView: View {
                             .font(.system(size: 14, weight: .semibold))
                     }
                     .padding()
-                    .frame(maxWidth: 150, minHeight: 50)
-                    .background(Color.orange.opacity(0.8))
+                    .frame(maxWidth: 150, minHeight: 20)
+                    .background(Color.gray.opacity(0.8))
                     .foregroundColor(.white)
                     .cornerRadius(18)
                 }

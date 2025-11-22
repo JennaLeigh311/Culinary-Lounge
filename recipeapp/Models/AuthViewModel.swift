@@ -22,6 +22,10 @@ class AuthViewModel: ObservableObject {
     func login(email: String, password: String) {
         
         signInState = .notAttempted
+        if email == "" || password == "" {
+            print("Empty data fields")
+            return
+        }
         
         let url = URL(string: "http://127.0.0.1:9090/login")!
         

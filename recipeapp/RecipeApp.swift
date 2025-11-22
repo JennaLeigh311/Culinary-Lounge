@@ -12,8 +12,9 @@ import Combine
 
 // This marks the entry point of my app
 
-
+// https://developer.apple.com/documentation/security/storing-keys-in-the-keychain
 // make constants to ensure these are registered before the app runs
+
 
 @main
 struct RecipeApp: App {
@@ -25,7 +26,6 @@ struct RecipeApp: App {
     // I want this to apply to all the views for now because there are some issues with not doing that (having to do with live filtering of recipes)
     // https://developer.apple.com/documentation/swiftui/stateobject
     @StateObject var user = User()
-
     @StateObject var authViewModel: AuthViewModel
     @StateObject var usersViewModel: UsersViewModel
     @StateObject var recipesViewModel = RecipesViewModel()
