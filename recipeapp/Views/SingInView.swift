@@ -41,6 +41,39 @@ struct SignInView: View {
                         .font(.title)
                 }
             case .failed:
+                VStack(spacing: 16) {
+                    // now one thing I don't get is why not every area in the rectangle is clickable
+                    TextField("Email", text: $creds.email)
+                        .padding(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 18)
+                                .stroke(.secondary.opacity(1), lineWidth: 1)
+                        )
+                    
+                    SecureField("Password", text: $creds.password)
+                        .padding(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 18)
+                                .stroke(.secondary.opacity(1), lineWidth: 1)
+                        )
+                    
+                    Button("Sign In") {
+                        Task { authViewModel.login(email: creds.email, password: creds.password) }
+                    }
+                    .padding()
+                    .background(Color.orange)
+                    .foregroundColor(.white)
+                    .cornerRadius(18)
+                    
+                    HStack {
+                        Text("or")
+                        NavigationLink("sign up") {
+                            
+                            SignUpView()
+                                .environmentObject(authViewModel)
+                        }
+                    }
+                }
                 Text("Wrong credentials")
                     .font(.title)
             case .notAttempted:

@@ -21,7 +21,7 @@ class AuthViewModel: ObservableObject {
     func login(email: String, password: String) {
         signInState = .notAttempted
         
-        let url = URL(string: "http://127.0.0.1:9090/login/")!
+        let url = URL(string: "http://127.0.0.1:9090/login")!
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -65,22 +65,24 @@ class AuthViewModel: ObservableObject {
                 DispatchQueue.main.async { // When the data is ready, go back to the main thread, and update the UI safely.
                     self.token = decodedData.token
                     self.user = UserDTO(
-                        id: UUID(),
+                        id: decodedData.id,
                         username: decodedData.username,
                         email: decodedData.email,
                         role: decodedData.role,
-                        created_at: Date()
+                        created_at: decodedData.created_at
                     )
+                    self.signInState = .success
                 }
                 
             } catch let jsonError {
-
                 print("Failed to decode json", jsonError)
             }
         }
         
         task.resume()
-        self.signInState = .success
+        if signInState != .success {
+            signInState = .failed
+        }
         
     }
     

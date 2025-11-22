@@ -23,7 +23,7 @@ struct UserController: RouteCollection {
             let ownerProtected = user.grouped(JWTMiddleware(), OwnerMiddleware(resourceOwnerIDKey: "userID"))
             
             ownerProtected.delete(use: delete) // DELETE /users/:userID -> delete a user [ADMIN OR USER IF DELETING OWN ACCOUNT]
-            users.get(use: getOne) // GET /users/:userID -> get a single user [PUBLIC]
+            user.get(use: getOne) // GET /users/:userID -> get a single user [PUBLIC]
             user.get("recipes", "count", use: getRecipeCount) // GET /users/:userID/recipes/count -> get number of recipes posted by this user [PUBLIC]
             ownerProtected.get("likes", "count", use: getLikeCount) // GET /users/:userID/likes/count -> get number of likes given by this user [USER OR ADMIN]
 //            ownerProtected.get("likes", use: getLikes) // GET /users/:userID/likes -> get all liked recipes of user [USER OR ADMIN]

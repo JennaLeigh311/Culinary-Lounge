@@ -1,5 +1,7 @@
 package models
 
+// http://go-database-sql.org/errors.html
+
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
@@ -66,12 +68,12 @@ func GetUser(ID string) (*User, error) {
 	}
 
 	if results.Next() {
-		err = results.Scan(&user.ID, &user.Username, &user.Email, &user.Role, &user.CreatedAt)
+		err = results.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Role, &user.CreatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan user: %w", err)
 		}
 	} else {
-
+		
 		return nil, nil // query succeeds, but no rows if no user found
 	}
 
@@ -97,14 +99,28 @@ func GetUserByEmail(email string) (*User, error) {
 	}
 
 	if results.Next() {
-		err = results.Scan(&user.ID, &user.Username, &user.Email, &user.Role, &user.CreatedAt)
-		if err != nil {
-			return nil, fmt.Errorf("failed to scan user: %w", err)
-		}
-	} else {
+		
+		// err = results.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Role, &user.CreatedAt)
+		err = results.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.CreatedAt)
 
-		return nil, nil // query succeeds, but no rows if no user found
+		if err != nil {
+			if err == sql.ErrNoRows {
+				return nil, fmt.Errorf("user not found")  // query succeeds, but user not found
+			} else {
+				return nil, fmt.Errorf("failed to scan user: %w", err)
+			}
+		}
+	} 
+
+	// bug in the code here found by chatgpt, he said I shouldn't be returning nil, nil
+	if err == sql.ErrNoRows {
+		return nil, fmt.Errorf("user not found")  // query succeeds, but user not found
 	}
+
+	if err != nil {
+        return nil, fmt.Errorf("scan failed: %w", err)
+    }
+
 
 	return user, nil
 }

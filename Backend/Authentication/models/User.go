@@ -1,7 +1,6 @@
 package models
 
 import (
-	"time"
 	"github.com/google/uuid"
 )
 
@@ -11,5 +10,5 @@ type User struct {
 	Email string `json:"email"`
 	Password string `json:"password"`
 	Role string `json:"role"`
-	CreatedAt time.Time `json:"created_at"`
+	CreatedAt []uint8 `json:"created_at"`
 }

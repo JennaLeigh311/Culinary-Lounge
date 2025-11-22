@@ -45,6 +45,7 @@ func main() {
 
 	// user login route
 	router.POST("/login", func(c *gin.Context) {
+
 		var creds struct {
 			Email    string `json:"email"`
 			Password string `json:"password"`
@@ -58,6 +59,7 @@ func main() {
 		// Fetch user by email from DB
 		user, err := models.GetUserByEmail(creds.Email)
 		if err != nil || user.Password != creds.Password {
+			fmt.Printf("error: %s", err)
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 			return
 		}
@@ -77,7 +79,9 @@ func main() {
 			"role":  user.Role,
 			"created_at": user.CreatedAt,
 		})
+
 	})
 
 	router.Run(":9090")
+
 }
