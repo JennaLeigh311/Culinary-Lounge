@@ -14,5 +14,4 @@ struct UserDTO: Codable, Identifiable {
     var username: String = ""
     var email: String = ""
     var role: String = ""
-    var created_at: Date = Date()
 }

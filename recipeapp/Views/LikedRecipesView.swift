@@ -36,7 +36,7 @@ struct LikedRecipesView: View {
         .onAppear { // onAppear will cause problems
 
             usersViewModel.user_likes = [] // clear any old data
-            usersViewModel.fetchLikes()
+//            usersViewModel.fetchLikes()
         }
     }
 }

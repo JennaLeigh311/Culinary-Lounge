@@ -21,15 +21,16 @@ var secretKey = []byte("your-secret-key")
 func createToken(email, role string) (string, error) {
     // Create a new JWT token with claims
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": email,                    // Subject (user identifier)
-		"iss": "Authentication",                  // Issuer
-		"aud": role,           // Audience (user role)
+		"sub": email,
+		"iss": "Authentication",
+		"aud": role,
 		"exp": time.Now().Add(time.Hour).Unix(), // Expiration time
-		"iat": time.Now().Unix(),                 // Issued at
+		"iat": time.Now().Unix(), // Issued at
 	})
 
 	tokenString, err := claims.SignedString(secretKey)
     if err != nil {
+
         return "", err
     }
 
@@ -77,7 +78,6 @@ func main() {
 			"username": user.Username,
 			"email": user.Email,
 			"role":  user.Role,
-			"created_at": user.CreatedAt,
 		})
 
 	})

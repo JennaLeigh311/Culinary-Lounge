@@ -41,6 +41,8 @@ class AuthViewModel: ObservableObject {
                 self.signInState = .failed
                 return
             }
+            print("RAW RESPONSE:")
+            print(String(data: data!, encoding: .utf8)!)
             
             guard let data = data else {
                 self.signInState = .failed
@@ -53,7 +55,6 @@ class AuthViewModel: ObservableObject {
                 let username: String
                 let email: String
                 let role: String
-                let created_at: Date
             }
             
             do {
@@ -69,20 +70,18 @@ class AuthViewModel: ObservableObject {
                         username: decodedData.username,
                         email: decodedData.email,
                         role: decodedData.role,
-                        created_at: decodedData.created_at
                     )
                     self.signInState = .success
                 }
                 
             } catch let jsonError {
                 print("Failed to decode json", jsonError)
+                DispatchQueue.main.async { self.signInState = .failed }
             }
         }
         
         task.resume()
-        if signInState != .success {
-            signInState = .failed
-        }
+
         
     }
     

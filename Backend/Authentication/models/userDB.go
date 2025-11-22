@@ -100,8 +100,7 @@ func GetUserByEmail(email string) (*User, error) {
 
 	if results.Next() {
 		
-		// err = results.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Role, &user.CreatedAt)
-		err = results.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.CreatedAt)
+		err = results.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.CreatedAt, &user.Role)
 
 		if err != nil {
 			if err == sql.ErrNoRows {
@@ -139,7 +138,7 @@ func AddUser(user User) {
 
 	insert, err := db.Query(
 		"INSERT INTO users (id,username,email,password,role,created_at) VALUES (?,?,?,?,?,now())",
-		user.ID, user.Username, user.Email, user.Password, user.Role, user.CreatedAt)
+		user.ID, user.Username, user.Email, user.Password, user.Role)
 
 	// if there is an error inserting, handle it
 	if err != nil {
