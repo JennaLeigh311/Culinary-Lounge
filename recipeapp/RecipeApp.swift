@@ -37,8 +37,10 @@ struct RecipeApp: App {
         // SwiftUI ensures that the following initialization uses the
         // closure only once during the lifetime of the view, so
         // later changes to the view's name input have no effect.
-        _authViewModel = StateObject(wrappedValue: AuthViewModel(user: user))
-        _usersViewModel = StateObject(wrappedValue: UsersViewModel(user: user))
+        let auth = AuthViewModel(user: user)
+        
+        _authViewModel = StateObject(wrappedValue: auth)
+        _usersViewModel = StateObject(wrappedValue: UsersViewModel(auth: auth))
     }
 
 
@@ -54,6 +56,12 @@ struct RecipeApp: App {
             .environmentObject(usersViewModel)
             .environmentObject(recipesViewModel)
             .environmentObject(user)
+            .onChange(of: authViewModel.signInState, perform: { state in
+                if state == .success {
+                    usersViewModel.fetchLikes()
+                    usersViewModel.fetchRecipes()
+                }
+            })
             
         }
     }

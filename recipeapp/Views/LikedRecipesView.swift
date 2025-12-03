@@ -10,10 +10,12 @@ import SwiftUI
 // temporary view
 // the only difference is the icon for now
 
+// https://medium.com/@ramdhas/task-vs-onappear-78cda282342d
+
 struct LikedRecipesView: View {
     @EnvironmentObject var recipesViewModel: RecipesViewModel
     @EnvironmentObject var usersViewModel: UsersViewModel
-    @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel // needed to pass user data to this view
     
     var body: some View{
         VStack (spacing: 15){
@@ -25,18 +27,15 @@ struct LikedRecipesView: View {
             ScrollView {
                 LazyVStack (spacing: 15){
 
-                    ForEach(usersViewModel.user_likes) { recipe in
-                        RecipeCardView(recipe: recipe)
+                    ForEach(recipesViewModel.recipes) { recipe in
+                        NavigationLink(destination: RecipeView(recipe: recipe)) {
+                            RecipeCardView(recipe: recipe)
+                        }
                     }
 
                 }
             }
         }
-        .background(Color.white) // also different background color just to make it more clear that they're different in the demo
-        
-        .onAppear { // onAppear will cause problems
-        
-            usersViewModel.fetchLikes()
-        }
+        .background(Color.white)
     }
 }

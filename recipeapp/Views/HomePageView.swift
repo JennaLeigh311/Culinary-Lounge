@@ -7,11 +7,19 @@
 
 import SwiftUI
 
+// TO READ:
+// https://stackoverflow.com/questions/71266331/swiftui-what-is-an-alternative-to-using-onappear
+
+// https://www.swiftjectivec.com/swiftui-run-code-only-once-versus-onappear-or-task/
+
+// https://medium.com/@calen0909/swiftui-navigation-enable-swipe-back-gesture-while-hiding-back-button-navigate-in-functions-13028424600c
 
 struct HomeView: View {
     @EnvironmentObject var filtersViewModel: FiltersViewModel // for filtering recipes
     @EnvironmentObject var recipesViewModel: RecipesViewModel
     @State private var searchText = ""
+    @State private var recipes: [RecipeDTO] = []
+
     
     var body: some View {
         
@@ -33,7 +41,7 @@ struct HomeView: View {
                 }
 
                 HStack {
-                    SearchBar(text: .constant(""))
+                    SearchBar(text: $searchText)
                 }
             }
             .padding(.horizontal)
@@ -49,7 +57,9 @@ struct HomeView: View {
                 LazyVStack (spacing: 15){
                     // render the recipe card for each recipe that's selected
                     ForEach(recipesViewModel.recipes) { recipe in
-                        RecipeCardView(recipe: recipe)
+                        NavigationLink(destination: RecipeView(recipe: recipe)) {
+                            RecipeCardView(recipe: recipe)
+                        }
                     }
                 }
             }

@@ -22,11 +22,11 @@ struct RecipeView: View {
             Text("Description: \(recipe.description)")
                 .font(.subheadline)
             
-        }
-        .padding()
-        .frame(maxWidth: 300, minHeight: 200)
-        .background(Color.orange.opacity(0.3))
-        .cornerRadius(12)
+            RecipeBottomMenuView()
+            
+        }.padding()
+        .background(Color.gray.opacity(0.8))
+        
     }
 }
 

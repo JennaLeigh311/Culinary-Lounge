@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 class AuthViewModel: ObservableObject {
-    @ObservedObject var user: User
+    @Published var user: User
     @Published var signInState: SignInState = .notAttempted
     @Published var signUpState: SignUpState = .notAttempted
 

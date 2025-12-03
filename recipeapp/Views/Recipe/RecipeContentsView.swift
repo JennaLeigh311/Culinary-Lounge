@@ -12,6 +12,15 @@ import SwiftUI
 struct RecipeContentsView: View {
     @StateObject private var recipesViewModel = RecipesViewModel()
     var body: some View {
-        
+        ZStack {
+            Rectangle()
+                .fill(.red)
+                .frame(width: 400, height: .infinity)
+                .cornerRadius(10)
+            
+            Text("contents")
+                .cornerRadius(8)
+                .frame(maxWidth: .infinity, minHeight: 1)
+        }
     }
 }
