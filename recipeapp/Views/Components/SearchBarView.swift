@@ -24,12 +24,14 @@ struct SearchBar: View {
                 .cornerRadius(8)
                 .overlay(
                     HStack {
-                        Image(systemName: "magnifyingglass")
+                        Image(systemName: "magnifyingglass") // the search icon
                             .foregroundColor(.gray)
                             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                             .padding(.leading, 8)
-
+                        
+                        // this will be true once the user taps the search bar
                         if isEditing {
+                            // this button on the right is to clear the search bar of any content
                             Button(action: {
                                 self.text = ""
                             }) {

@@ -19,6 +19,7 @@ struct CreateRecipeMigration: AsyncMigration {
             .field("type_tag", .string)
             .field("cuisine_tag", .string)
             .field("content", .string, .required)
+            .field("ingredients", .string, .required)
             .field("instructions", .string, .required)
             .field("image_url", .string)
             .field("date_posted", .datetime)

@@ -11,7 +11,8 @@ extension String {
 
 // configures your application
 public func configure(_ app: Application) async throws {
-    app.jwt.signers.use(.hs256(key: Environment.get("JWT_SECRET_KEY") ?? "fallback-insecure-key"))
+
+    app.jwt.signers.use(.hs256(key: "your-secret-key"))
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 

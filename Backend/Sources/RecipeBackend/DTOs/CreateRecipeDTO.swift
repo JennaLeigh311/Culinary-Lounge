@@ -18,6 +18,7 @@ struct CreateRecipeDTO: Content {
     var type_tag: String
     var content: String
     var instructions: String
+    var ingredients: String
 
     func toModel() -> Recipe {
         Recipe(
@@ -29,7 +30,8 @@ struct CreateRecipeDTO: Content {
             cuisine_tag: cuisine_tag,
             type_tag: type_tag,
             content: content,
-            instructions: instructions
+            instructions: instructions,
+            ingredients: ingredients
         )
     }
 }

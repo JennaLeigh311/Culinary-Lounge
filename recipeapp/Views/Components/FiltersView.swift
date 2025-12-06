@@ -7,18 +7,14 @@
 
 import SwiftUI
 
-// I think the way that I can implement dictionaries is by using them for filtering
-// So once I create a recipe, the tags that it has will be used as keys in a hashmap
-
 // https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations
 
 struct FiltersView: View {
     // this view creates the view model and needs to keep it alive (keeps it stored in memory even with view re-renders)
     // I'm actually debating whether to make this an environment object as well so that the recipes views can filter based on it and so that it can stay constant between view calls
     @EnvironmentObject var viewModel: FiltersViewModel
-    
-    // OMG after like 4 hours of straight up just looking for what the bug in my app was, I FOUND IT!!!!!! I Did it, I didn't give up ! It was here, and it was the simple fact that this wasn't an Enviornment Object call but a state object
-    
+    @EnvironmentObject var recipesViewModel: RecipesViewModel
+ 
     // var body is a computed property that's called again and again when something changes, and this returns a view ('some' indicates an opaque return type - return a type that conforms to View(a protocol) but doesn't specify which one) fvg v cv v cv bvg  vn vbcxdcfvb nbgvfcdsxc vvcx
     // mn 098765432
     var body: some View {

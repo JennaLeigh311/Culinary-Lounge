@@ -5,12 +5,14 @@
 //  Created by Jenna Bunescu on 11/21/25.
 //
 
+// Sources:
 // https://stackoverflow.com/questions/78626615/swiftui-full-width-button-why-maxwidth-infinity-why-not-minwidth-infini
 
 import SwiftUI
 
 // This view is the user profile page
 // Currently, there are no APIs to fetch the user's stats, so those are temporarily statically configured in here
+// This view allows you to see your own recipes, as well as navigate to the view that creates a new recipe
 struct UserProfileView: View {
     
     @EnvironmentObject var recipesViewModel: RecipesViewModel // needed to post a new recipe
@@ -23,7 +25,6 @@ struct UserProfileView: View {
         ScrollView {
             
             VStack (spacing: 15){
-                
                 VStack(spacing: 3) {
                     // username tag
                     Text("@\(authViewModel.user.username)")
@@ -34,7 +35,7 @@ struct UserProfileView: View {
                         // user profile icon
                         heartImage
                             .resizable()
-                            .scaledToFill()
+                            .scaledToFill() // fills the circle
                             .frame(width: 50, height: 50)
                             .clipShape(Circle()) // "trap" the image into a circle
                             .overlay(Circle().stroke(Color.gray, lineWidth: 2)) // border
@@ -72,9 +73,8 @@ struct UserProfileView: View {
                     .padding(.horizontal, 20)
                     .foregroundColor(.black)
                     
-                    // button to post a recipe that calls the recipes view model
-                    // changes to be made: link this to the fetchRecipes() function of the UsersViewModel
-                    Button(action: { usersViewModel.postRecipe() }) {
+                    // button to post a recipe that navigates to the view for creating a recipe
+                    NavigationLink(destination: CreateRecipeView()) {
                         Text("Post a Recipe")
                             .padding(10)
                     }.frame(maxWidth: .infinity, minHeight: 30)
@@ -84,25 +84,22 @@ struct UserProfileView: View {
                     .foregroundColor(.black)
                     }
                 
-                
-                        // TO DO: make a list of recipe names here
                     VStack(alignment: .leading, spacing: 10) {
+                        // check if the user has any recipes posted
                         if usersViewModel.user_recipes.isEmpty {
                             Text("No recipes yet.")
                                 .foregroundColor(.secondary)
                                 .padding(.top, 10)
                         } else {
+                            // For every recipe that user has posted, render a navigation link
                             ForEach(usersViewModel.user_recipes) { recipe in
-                                HStack {
+                                NavigationLink(destination: RecipeView(recipe: recipe)) {
                                     Text(recipe.title)
                                         .font(.headline)
-                                    
+                                        .foregroundColor(.black)
                                     Spacer()
-                                    
-                                    NavigationLink(destination: RecipeView(recipe: recipe)) {
-                                        Image(systemName: "chevron.right")
-                                            .foregroundColor(.gray)
-                                    }
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(.gray)
                                 }
                                 .padding(.vertical, 8)
                                 .padding(.horizontal)

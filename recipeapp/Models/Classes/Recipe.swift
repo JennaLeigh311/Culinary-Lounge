@@ -10,16 +10,17 @@ import SwiftUI
 
 
 struct RecipeDTO: Codable, Identifiable {
-    var ID: UUID { id }
-    let id: UUID
-    let title: String
-    let author_id: String
-    let description: String
-    let cook_time_minutes: Int
-    let servings: Float
-    let cuisine_tag: String
-    let type_tag: String
-    let instructions: String
-    let content: String
-    let date_posted: Date
+    var ID: UUID { id! }
+    var id: UUID? = nil
+    var title: String = ""
+    var author_id: String = ""
+    var description: String = ""
+    var cook_time_minutes: Int = 0
+    var servings: Float = 0
+    var cuisine_tag: String = ""
+    var type_tag: String = ""
+    var ingredients: String = ""
+    var instructions: String = ""
+    var content: String = ""
+    var date_posted: Date = Date()
 }

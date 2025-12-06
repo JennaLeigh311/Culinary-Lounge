@@ -40,6 +40,9 @@ final class Recipe: Model, Content, @unchecked Sendable{
     @Field(key: "content")
     var content: String
     
+    @Field(key: "ingredients")
+    var ingredients: String
+    
     @Field(key: "instructions")
     var instructions: String
     
@@ -59,7 +62,8 @@ final class Recipe: Model, Content, @unchecked Sendable{
          cuisine_tag: String,
          type_tag: String,
          content: String,
-         instructions: String
+         instructions: String,
+         ingredients: String
     ) {
         self.id = id
         self.$author.id = author_id
@@ -70,6 +74,7 @@ final class Recipe: Model, Content, @unchecked Sendable{
         self.cuisine_tag = cuisine_tag
         self.type_tag = type_tag
         self.content = content
+        self.ingredients = ingredients
         self.instructions = instructions
         self.date_posted = Date()
     }

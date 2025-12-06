@@ -24,11 +24,15 @@ final class FiltersViewModel: ObservableObject {
     // where all the current selected recipes will go
     @Published var filteredRecipes: [RecipeDTO] = []
     
-    // make sure that filterRecipes() is called at initialization so that the initial view has a default list of recipe cards (otherwise it would be empty and render an empty recipe card page)
-    init() {
+    
+    private let recipes: RecipesViewModel
+
+    init(recipes: RecipesViewModel) {
+        self.recipes = recipes
         filterRecipes()
-        print("Initial filteredRecipes: \(filteredRecipes.map { $0.title })") // printing for debugging
-    }
+        print("Initial filteredRecipes: \(filteredRecipes.map { $0.title })")
+    } // make sure that filterRecipes() is called at initialization so that the initial view has a default list of recipe cards (otherwise it would be empty and render an empty recipe card page)
+
     
     func toggleTypesList() {
         showTypesList.toggle()

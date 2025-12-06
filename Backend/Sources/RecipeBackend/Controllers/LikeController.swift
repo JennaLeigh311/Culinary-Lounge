@@ -17,9 +17,8 @@ struct LikeController: RouteCollection {
         adminProtected.get(use: self.index) // GET /likes -> list all likes [ADMIN]
         userProtected.post(use: self.create) // POST /likes -> create a new like [USER OR ADMIN]
         likes.group(":likeID") { like in
-            let ownerProtected = like.grouped(JWTMiddleware(), OwnerMiddleware(resourceOwnerIDKey: "likeID"))
-            ownerProtected.delete(use: delete) // DELETE /likes/:likeID -> delete a like [USER OR ADMIN]
-            ownerProtected.get(use: getOne)    // GET /likes/:likeID -> get a single like [PUBLIC]
+            userProtected.delete(use: delete) // DELETE /likes/:likeID -> delete a like [USER OR ADMIN]
+            userProtected.get(use: getOne)    // GET /likes/:likeID -> get a single like [PUBLIC]
         }
     }
 

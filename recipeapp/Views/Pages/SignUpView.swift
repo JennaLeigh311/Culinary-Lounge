@@ -17,11 +17,16 @@ enum SignUpState {
 struct SignUpView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @State var creds = Credentials()
+    @FocusState private var focusedField: Field?
+
+     private enum Field: Int, Hashable {
+       case email, password
+     }
 
     var body: some View {
-        // Sign-in form
+        // Sign-up form
         VStack(spacing: 16) {
-            // now one thing I don't get is why not every area in the rectangle is clickable
+
             TextField("Email", text: $creds.email)
                 .padding(10)
                 .overlay(
@@ -29,6 +34,7 @@ struct SignUpView: View {
                         .stroke(.secondary.opacity(1), lineWidth: 1)
                 )
             
+            // whatever the user types will be bound to the password string
             SecureField("Password", text: $creds.password)
                 .padding(10)
                 .overlay(
@@ -36,8 +42,9 @@ struct SignUpView: View {
                         .stroke(.secondary.opacity(1), lineWidth: 1)
                 )
             
-            Button("Sign Up") {
+            Button("Sign Up") { // call the signup function
                 Task { authViewModel.signup(email: creds.email, password: creds.password) }
+                // TO DO: if signup state is success, log the person in immediately
             }
             .padding()
             .background(Color.orange)
@@ -45,7 +52,8 @@ struct SignUpView: View {
             .cornerRadius(18)
         }
         .padding()
-        .autocapitalization(.none)
+        .textInputAutocapitalization(.never) // this is because iOS has auto-caps on by default in text fields
+        .disableAutocorrection(true)
     }
 }
     

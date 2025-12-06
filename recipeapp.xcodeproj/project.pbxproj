@@ -29,9 +29,33 @@
 		105383EA2E7360E700A2960D /* recipeappUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = recipeappUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		10BB873D2EDFCEE70038FD28 /* Exceptions for "recipeapp" folder in "recipeapp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Future_Changes.md,
+			);
+			target = 105383D02E7360E500A2960D /* recipeapp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		10BB873E2EDFCEE70038FD28 /* Exceptions for "recipeapp" folder in "Compile Sources" phase from "recipeapp" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 105383CD2E7360E500A2960D /* Sources */;
+			membershipExceptions = (
+				Future_Changes.md,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		105383D32E7360E500A2960D /* recipeapp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				10BB873D2EDFCEE70038FD28 /* Exceptions for "recipeapp" folder in "recipeapp" target */,
+				10BB873E2EDFCEE70038FD28 /* Exceptions for "recipeapp" folder in "Compile Sources" phase from "recipeapp" target */,
+			);
 			path = recipeapp;
 			sourceTree = "<group>";
 		};

@@ -19,15 +19,20 @@ struct LikedRecipesView: View {
     
     var body: some View{
         VStack (spacing: 15){
-            Text(authViewModel.user.username)
+            Text(authViewModel.user.username + "'s liked recipes")
+                .font(.headline)
+                .fontWeight(.bold)
+                .padding(.top, 20)
             SearchBar(text: .constant(""))
                 .padding(.horizontal)
                 .padding(.top, 30)
+            
             FiltersView()
+            
             ScrollView {
                 LazyVStack (spacing: 15){
 
-                    ForEach(recipesViewModel.recipes) { recipe in
+                    ForEach(usersViewModel.user_likes) { recipe in
                         NavigationLink(destination: RecipeView(recipe: recipe)) {
                             RecipeCardView(recipe: recipe)
                         }

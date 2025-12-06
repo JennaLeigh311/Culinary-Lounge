@@ -17,6 +17,7 @@ struct RecipeDTO: Content {
     var cuisine_tag: String
     var type_tag: String
     var content: String
+    var ingredients: String
     var instructions: String
     var date_posted: Date
     
@@ -32,6 +33,7 @@ struct RecipeDTO: Content {
         self.type_tag = recipe.type_tag
         self.instructions = recipe.instructions
         self.content = recipe.content
+        self.ingredients = recipe.ingredients
         self.date_posted = recipe.date_posted
     }
 }

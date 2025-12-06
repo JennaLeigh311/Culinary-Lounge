@@ -27,8 +27,8 @@ struct RecipeController: RouteCollection {
         // I might need an API that gives me all the comment IDs
         
         recipes.group(":recipeID") { recipe in
-            let ownerProtected = recipe.grouped(JWTMiddleware(), OwnerMiddleware(resourceOwnerIDKey: "recipeID"))
-            ownerProtected.delete(use: delete) // DELETE /recipe/:recipeID -> deletes a recipe [USER who owns the recipe]
+            
+            userProtected.delete(use: delete) // DELETE /recipe/:recipeID -> deletes a recipe [USER who owns the recipe]
         }
         
         recipes.get("filter", "cuisine", ":cuisineTag", use: getAllCuisineTag) // GET /recipes/filter/cuisine/:cuisineTag -> gives all the recipes with a certain cuisine_tag [PUBLIC]

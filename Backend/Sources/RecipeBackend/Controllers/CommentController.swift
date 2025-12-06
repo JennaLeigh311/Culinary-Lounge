@@ -18,8 +18,7 @@ struct CommentController: RouteCollection {
         userProtected.post(use: self.create) // POST /comments -> create a new comment [USER OR ADMIN]
         comments.group(":commentID") { comment in
             
-            let ownerProtected = comment.grouped(JWTMiddleware(), OwnerMiddleware(resourceOwnerIDKey: "commentID"))
-            ownerProtected.delete(use: delete) // DELETE /comments/:commentID -> delete a comment [NEEDS TO BE USER OR ADMIN -> IF USER, COMMENT NEEDS TO BELONG TO USER]
+            userProtected.delete(use: delete) // DELETE /comments/:commentID -> delete a comment [NEEDS TO BE USER OR ADMIN -> IF USER, COMMENT NEEDS TO BELONG TO USER]
             comment.get(use: getOne)    // GET /comments/:commentID -> get a single comment [PUBLIC]
         }
     }

@@ -46,9 +46,10 @@ struct BottomMenuView: View {
                 
                 
             }
-        }.environmentObject(authViewModel)
-            .environmentObject(recipesViewModel)
-            .environmentObject(usersViewModel)
+        }
+        .environmentObject(authViewModel)
+        .environmentObject(recipesViewModel)
+        .environmentObject(usersViewModel)
     }
 }
         

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct IngredientsView: View {
     @StateObject private var recipesViewModel = RecipesViewModel()
     var body: some View {

@@ -8,6 +8,11 @@
 import Vapor
 import Fluent
 
+enum Role: Codable {
+    case admin
+    case user
+}
+
 
 // unchecked Sendable is there to fix an error that appeared when I wrote var id: UUID?, which I don't think should be a constant variable but it was giving an error that the variable was mutable, which is apparently some new Swift thing, and the people on StackOverflow were suggesting marking the class as unchecked Sendable, which I don't understand what it does except for telling Swift not to check for things that aren't supposed to be there and basically saying "Swift, trust me, there is nothing suspicious going on here"
 
@@ -29,14 +34,18 @@ final class User: Authenticatable, Model, Content, @unchecked Sendable {
     
     @Field(key: "created_at")
     var created_at: Date
+    
+    @Field(key: "role")
+    var role: Role
 
     init() { } // according to the documentation, all models must have an empty initializer
 
-    init(id: UUID? = nil, username: String, email: String, password: String, created_at: Date = Date()) {
+    init(id: UUID? = nil, username: String, email: String, password: String, role: Role, created_at: Date = Date()) {
         self.id = id
         self.username = username
         self.email = email
         self.password = password
+        self.role = role
         self.created_at = created_at
     }
 }

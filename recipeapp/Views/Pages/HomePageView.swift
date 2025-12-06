@@ -7,19 +7,15 @@
 
 import SwiftUI
 
-// TO READ:
+// sources:
 // https://stackoverflow.com/questions/71266331/swiftui-what-is-an-alternative-to-using-onappear
-
 // https://www.swiftjectivec.com/swiftui-run-code-only-once-versus-onappear-or-task/
-
 // https://medium.com/@calen0909/swiftui-navigation-enable-swipe-back-gesture-while-hiding-back-button-navigate-in-functions-13028424600c
 
 struct HomeView: View {
     @EnvironmentObject var filtersViewModel: FiltersViewModel // for filtering recipes
     @EnvironmentObject var recipesViewModel: RecipesViewModel
     @State private var searchText = ""
-    @State private var recipes: [RecipeDTO] = []
-
     
     var body: some View {
         
@@ -63,11 +59,6 @@ struct HomeView: View {
                     }
                 }
             }
-        }
-        .onAppear {
-            
-            recipesViewModel.recipes = [] // clear any old data
-            recipesViewModel.fetchRecipe()
         }
     }
 }

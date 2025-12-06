@@ -13,8 +13,9 @@ struct CreateUserDTO: Content {
     var username: String
     var email: String
     var password: String
+    var role: Role
 
     func toModel() -> User {
-        User(username: username, email: email, password: password)
+        User(username: username, email: email, password: password, role: role)
     }
 }

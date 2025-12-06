@@ -14,9 +14,9 @@ class UsersViewModel: ObservableObject {
     
     private let auth: AuthViewModel
 
-        init(auth: AuthViewModel) {
-            self.auth = auth
-        }
+    init(auth: AuthViewModel) {
+        self.auth = auth
+    }
     
     // Get all likes from user
     func fetchLikes() {
@@ -29,6 +29,7 @@ class UsersViewModel: ObservableObject {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         
+        
         let task = URLSession.shared.dataTask(with: request){ data, response, error in
             if let error = error {
                 print("Error while fetching data:", error)
@@ -38,6 +39,10 @@ class UsersViewModel: ObservableObject {
             
             guard let data = data else {
                 return
+            }
+            
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("RAW RESPONSE FROM user/likes:", jsonString)
             }
             
             
@@ -84,6 +89,10 @@ class UsersViewModel: ObservableObject {
                 return
             }
             
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("RAW RESPONSE FROM user/recipes:", jsonString)
+            }
+            
             
             do {
                 let decoder = JSONDecoder()
@@ -106,11 +115,49 @@ class UsersViewModel: ObservableObject {
     
     
     
-    // post a new recipe
-    func postRecipe() {
-        
-    }
     
+    // post a new recipe
+    func createRecipe(newRecipe: RecipeDTO) {
+        var recipe = newRecipe
+        recipe.author_id = auth.user.id.uuidString // it expects a String type
+        let url = URL(string: "http://127.0.0.1:8080/recipes")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(auth.user.token)", forHTTPHeaderField: "Authorization")
+        
+        request.httpBody = try? JSONEncoder().encode(recipe)
+
+        let task = URLSession.shared.dataTask(with: request){ data, response, error in
+            if let error = error {
+                print("Error while creating recipe:", error)
+                return
+            }
+            
+            guard let data = data else {
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
+                
+                let decodedData = try decoder.decode(RecipeDTO.self, from: data)
+                // Assigning the data to the array
+                DispatchQueue.main.async { // When the data is ready, go back to the main thread, and update the UI safely.
+
+                    self.user_recipes.append(decodedData)
+                    
+                }
+                
+            } catch let jsonError {
+                print("Failed to decode json", jsonError)
+            }
+        }
+        
+        task.resume()
+    }
     // delete a recipe
     
     

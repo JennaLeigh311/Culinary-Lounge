@@ -9,10 +9,12 @@ import SwiftUI
 import Combine
 
 
-
 // This marks the entry point of my app
 
+// Sources:
 // https://developer.apple.com/documentation/security/storing-keys-in-the-keychain
+// https://developer.apple.com/documentation/swiftui/stateobject
+// https://www.hackingwithswift.com/quick-start/swiftui/how-to-use-environmentobject-to-share-data-between-views
 // make constants to ensure these are registered before the app runs
 
 
@@ -20,16 +22,12 @@ import Combine
 struct RecipeApp: App {
     // State object is meant for keeping the same instance alive even after view re-renders
     // Without it, if the view refreshed it would create a new view model, resetting all the data
-    // For the signInViewModel we definitely want the entire app to know that the user is logged in for the whole session
-    // This is a private variable so that only RecipeApp can access it
-    
-    // I want this to apply to all the views for now because there are some issues with not doing that (having to do with live filtering of recipes)
-    // https://developer.apple.com/documentation/swiftui/stateobject
+    // For the authViewModel we definitely want the entire app to know that the user is logged in for the whole session
     @StateObject var user = User()
     @StateObject var authViewModel: AuthViewModel
     @StateObject var usersViewModel: UsersViewModel
-    @StateObject var recipesViewModel = RecipesViewModel()
-    @StateObject var filtersViewModel = FiltersViewModel()
+    @StateObject var recipesViewModel: RecipesViewModel
+    @StateObject var filtersViewModel: FiltersViewModel
 
     init() {
         let user = User()
@@ -38,9 +36,12 @@ struct RecipeApp: App {
         // closure only once during the lifetime of the view, so
         // later changes to the view's name input have no effect.
         let auth = AuthViewModel(user: user)
+        let recipes = RecipesViewModel()
         
         _authViewModel = StateObject(wrappedValue: auth)
+        _recipesViewModel = StateObject(wrappedValue: recipes)
         _usersViewModel = StateObject(wrappedValue: UsersViewModel(auth: auth))
+        _filtersViewModel = StateObject(wrappedValue: FiltersViewModel(recipes: recipes))
     }
 
 
@@ -60,6 +61,7 @@ struct RecipeApp: App {
                 if state == .success {
                     usersViewModel.fetchLikes()
                     usersViewModel.fetchRecipes()
+                    recipesViewModel.fetchRecipes()
                 }
             })
             

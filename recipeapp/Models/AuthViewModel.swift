@@ -91,7 +91,9 @@ class AuthViewModel: ObservableObject {
     
     
     func signup(email: String, password: String) {
-        let url = URL(string: "http://127.0.0.1:9090/signup/")!
+        signUpState = .notAttempted
+        
+        let url = URL(string: "http://127.0.0.1:9090/users")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -115,7 +117,14 @@ class AuthViewModel: ObservableObject {
             }
             
             struct SignupResponse: Codable {
-                let message: String
+                struct SignupResponse: Codable {
+                    let message: String
+                    var id: UUID?
+                    var username: String
+                    var email: String
+                    var created_at: Date
+                    
+                }
             }
             
             do {
@@ -126,6 +135,7 @@ class AuthViewModel: ObservableObject {
                 // Assigning the data to the array
                 DispatchQueue.main.async { // When the data is ready, go back to the main thread, and update the UI safely.
                     print(decodedData)
+                    self.signUpState = .success
                     
                 }
                 
@@ -136,7 +146,6 @@ class AuthViewModel: ObservableObject {
         }
         
         task.resume()
-        self.signUpState = .success
         
         
     }
