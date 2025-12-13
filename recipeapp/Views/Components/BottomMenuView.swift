@@ -5,25 +5,28 @@
 //  Created by Jenna Bunescu on 9/29/25.
 //
 
+// https://www.hackingwithswift.com/quick-start/swiftui/adding-tabview-and-tabitem
+
 import SwiftUI
-import os
+import os // I forgot what this import was for but i dont think i use it anymore
 
 // This view will be the interface between the user and all of our main pages.
-// This menu will in the future (NOW!) be different based on whether the user is logged in or not
-// I actually have an idea how to do this and I think it's easy so I'll just do it now
+// This menu will is different based on whether the user is logged in or not
 struct BottomMenuView: View {
-    // We need access to this viewModel which holds the signInState
-    @EnvironmentObject var authViewModel: AuthViewModel
+    
+    // all of these view models are environmental objects that need to be passed into our other pages
+    @EnvironmentObject var authViewModel: AuthViewModel // We need access to this viewModel which holds the signInState
     @EnvironmentObject var recipesViewModel: RecipesViewModel
     @EnvironmentObject var usersViewModel: UsersViewModel
     
-
+    
     var body: some View{
+        // using tab view instead of Navigation links to fix the problem of new views being created infinitely (talked to Scott about this in like the first few LMs)
         TabView {
             // check what's the status of the signInState
             if authViewModel.signInState == .success {
                 // If user is signed in, don't display the sign in button and instead display the liked recipes view
-                // Navigation link allows a user to tap on a UI component to access a new view - must be inside a NavigationStack (which is in my RecipeApp wrapping everything inside it)
+                
                 HomeView() .tabItem {
                     Label("Home", systemImage: "house.fill")
                 }

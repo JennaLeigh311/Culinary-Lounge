@@ -58,10 +58,11 @@ struct RecipeApp: App {
             .environmentObject(recipesViewModel)
             .environmentObject(user)
             .onChange(of: authViewModel.signInState, perform: { state in
+                
                 if state == .success {
                     usersViewModel.fetchLikes()
                     usersViewModel.fetchRecipes()
-                    recipesViewModel.fetchRecipes()
+        
                 }
             })
             

@@ -8,13 +8,17 @@
 
 import SwiftUI
 
-
+// this is what the recipe article will contain to see the instructions
 struct InstructionsView: View {
-    @StateObject private var recipesViewModel = RecipesViewModel()
+    let recipe: RecipeDTO
+    
     var body: some View {
-        Text("instructions")
-            .cornerRadius(8)
-            .background(Color.white)
-            .frame(maxWidth: .infinity, minHeight: 1)
+        ScrollView {
+            Text(recipe.instructions)
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .navigationTitle("Instructions")
+        .background(Color(.systemGroupedBackground))
     }
 }

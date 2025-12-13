@@ -8,9 +8,10 @@
 import Vapor
 import Fluent
 
-enum Role: Codable {
-    case admin
-    case user
+enum Role: String, Codable {
+    case admin = "admin"
+    case user = "user"
+    case guest = "guest"
 }
 
 

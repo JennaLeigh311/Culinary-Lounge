@@ -8,6 +8,7 @@
 import Fluent
 import Vapor
 
+// data transfer object of user
 struct UserDTO: Content {
     var id: UUID?
     var username: String

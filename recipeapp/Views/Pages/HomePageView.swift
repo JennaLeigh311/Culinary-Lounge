@@ -12,13 +12,18 @@ import SwiftUI
 // https://www.swiftjectivec.com/swiftui-run-code-only-once-versus-onappear-or-task/
 // https://medium.com/@calen0909/swiftui-navigation-enable-swipe-back-gesture-while-hiding-back-button-navigate-in-functions-13028424600c
 
+// https://www.hackingwithswift.com/quick-start/swiftui/how-to-render-images-using-sf-symbols
+// https://www.hackingwithswift.com/quick-start/swiftui/how-to-add-horizontal-and-vertical-scrolling-using-scrollview
+
+
+// this is the home page, what the user sees whether they're logged in or not
+// here the user can see all the trending recipes and search the entire database for the recipe they want to see
 struct HomeView: View {
     @EnvironmentObject var filtersViewModel: FiltersViewModel // for filtering recipes
-    @EnvironmentObject var recipesViewModel: RecipesViewModel
-    @State private var searchText = ""
+    @EnvironmentObject var recipesViewModel: RecipesViewModel // this is for rendering recipes into recipe cards
+    @State private var searchText = "" // this variable is to pass into the search bar view component
     
     var body: some View {
-        
         VStack (spacing: 15){
             // We want the logo and search bar on the same horizontal stack
             VStack {
@@ -35,7 +40,8 @@ struct HomeView: View {
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
                 }
-
+                
+                // the search bar
                 HStack {
                     SearchBar(text: $searchText)
                 }
@@ -44,6 +50,7 @@ struct HomeView: View {
             .padding(.vertical, 8)
             .background(.gray.opacity(0.1)) // subtle translucent background
             
+            // the filters
             FiltersView()
 
             // a scrollable view
@@ -52,6 +59,8 @@ struct HomeView: View {
             // and also iterate through them automatically not manually
                 LazyVStack (spacing: 15){
                     // render the recipe card for each recipe that's selected
+                    
+                    // Navigation link allows a user to tap on a UI component to access a new view
                     ForEach(recipesViewModel.recipes) { recipe in
                         NavigationLink(destination: RecipeView(recipe: recipe)) {
                             RecipeCardView(recipe: recipe)
@@ -61,4 +70,5 @@ struct HomeView: View {
             }
         }
     }
+    
 }

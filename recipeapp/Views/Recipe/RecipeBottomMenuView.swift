@@ -7,23 +7,26 @@
 
 import SwiftUI
 
+// this is the component that helps us navigte between ingredients, instructions, and content
 struct RecipeBottomMenuView: View {
-    
-    var body: some View{
+    let recipe: RecipeDTO
+
+    var body: some View {
         TabView {
-            
-            IngredientsView() .tabItem {
-                Label("Ingredients", systemImage: "house.fill")
-            }
-            InstructionsView() .tabItem {
-                Label("Instructions", systemImage: "heart.circle.fill")
-            }
-            RecipeContentsView() .tabItem {
-                Label("Content", systemImage: "heart.circle.fill")
-            }
-                
+            IngredientsView(recipe: recipe)
+                .tabItem {
+                    Label("Ingredients", systemImage: "list.bullet")
+                }
+
+            InstructionsView(recipe: recipe)
+                .tabItem {
+                    Label("Instructions", systemImage: "number")
+                }
+
+            RecipeContentsView(recipe: recipe)
+                .tabItem {
+                    Label("Content", systemImage: "book.fill")
+                }
         }
     }
 }
-        
-

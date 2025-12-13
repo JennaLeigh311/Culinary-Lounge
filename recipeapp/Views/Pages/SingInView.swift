@@ -10,6 +10,7 @@
 // https://medium.com/@jpmtech/swiftui-text-input-f9cae9eaca48
 // https://stackoverflow.com/questions/69002594/can-i-somehow-convert-bindingstring-to-string
 // https://stackoverflow.com/questions/64340992/swiftui-texteditor-disable-autocapitalization
+// https://www.hackingwithswift.com/articles/216/complete-guide-to-navigationview-in-swiftui
 
 import SwiftUI
 import SwiftData

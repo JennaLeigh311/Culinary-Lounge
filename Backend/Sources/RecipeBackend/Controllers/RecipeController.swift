@@ -7,12 +7,15 @@
 import Vapor
 import Fluent
 
+// ALL THE CONTROLLERS WERE BUILT WITH THE USE OF the DEFAULT CONTROLLER TEMPLATE, SWIFT DOCUMENTATION, AND SOME HELP FROM AI
+// https://docs.vapor.codes/basics/controllers/
+
 struct RecipeController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let recipes = routes.grouped("recipes")
         let userProtected = recipes.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["user","admin"]))
-        let adminProtected = recipes.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["admin"]))
-        
+//        let adminProtected = recipes.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["admin"]))
+//        
         recipes.get(use: self.index) // GET /recipes -> list all recipes [PUBLIC]
 
         userProtected.post(use: self.create) // POST /recipes -> create a new recipe [USER OR ADMIN]
@@ -70,19 +73,24 @@ struct RecipeController: RouteCollection {
         return .noContent
     }
     
+    // handler to get number of likes on this recipe
     @Sendable
     func getLikeCount(req: Request) async throws -> Int {
+        // get the recipe, look for it in the database based on recipe id
         guard let recipe = try await Recipe.find(req.parameters.get("recipeID"), on: req.db) else {
             throw Abort(.notFound)
         }
+        // query database for count
         let count = try await Like.query(on: req.db)
             .filter(\Like.$recipe.$id == recipe.id!)
             .count()
         return count
     }
     
+    // handler to get number of comments on this recipe
     @Sendable
     func getCommentCount(req: Request) async throws -> Int {
+        // get the recipe, look for it in the database based on recipe id
         guard let recipe = try await Recipe.find(req.parameters.get("recipeID"), on: req.db) else {
             throw Abort(.notFound)
         }

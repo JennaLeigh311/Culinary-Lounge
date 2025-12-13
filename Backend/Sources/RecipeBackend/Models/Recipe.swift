@@ -8,6 +8,8 @@
 import Vapor
 import Fluent
 
+// https://docs.vapor.codes/fluent/model/
+
 final class Recipe: Model, Content, @unchecked Sendable{
     static let schema = "recipes" // table name in DB
 

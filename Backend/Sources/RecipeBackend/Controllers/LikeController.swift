@@ -22,12 +22,14 @@ struct LikeController: RouteCollection {
         }
     }
 
+    // handler to get all likes
     @Sendable
     func index(req: Request) async throws -> [LikeDTO] {
         let likes = try await Like.query(on: req.db).all()
         return likes.map { LikeDTO(from: $0) }
     }
 
+    // handler to create a like
     @Sendable
     func create(req: Request) async throws -> LikeDTO {
         let input = try req.content.decode(CreateLikeDTO.self)
@@ -36,6 +38,7 @@ struct LikeController: RouteCollection {
         return LikeDTO(from: like)
     }
 
+    // handler to get one like
     @Sendable
     func getOne(req: Request) async throws -> LikeDTO {
         guard let like = try await Like.find(req.parameters.get("likeID"), on: req.db) else {
@@ -44,6 +47,7 @@ struct LikeController: RouteCollection {
         return LikeDTO(from: like)
     }
 
+    //handler to delete a like
     @Sendable
     func delete(req: Request) async throws -> HTTPStatus {
         guard let like = try await Like.find(req.parameters.get("likeID"), on: req.db) else {

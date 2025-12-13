@@ -62,56 +62,69 @@ struct UserProfileView: View {
                             }
                         }.padding(10)
                     }.padding(30)
-                
+                    
                     // edit profile button - currently does not operate
                     Button(action: { print("record clicked") }) {
                         Text("Edit Profile")
                             .padding(10)
                     }.frame(maxWidth: .infinity, minHeight: 30)
-                    .background(Color.gray)
-                    .cornerRadius(4)
-                    .padding(.horizontal, 20)
-                    .foregroundColor(.black)
+                        .background(Color.gray)
+                        .cornerRadius(4)
+                        .padding(.horizontal, 20)
+                        .foregroundColor(.black)
                     
                     // button to post a recipe that navigates to the view for creating a recipe
                     NavigationLink(destination: CreateRecipeView()) {
                         Text("Post a Recipe")
                             .padding(10)
                     }.frame(maxWidth: .infinity, minHeight: 30)
-                    .background(Color.gray)
-                    .cornerRadius(4)
-                    .padding(.horizontal, 20)
-                    .foregroundColor(.black)
-                    }
+                        .background(Color.gray)
+                        .cornerRadius(4)
+                        .padding(.horizontal, 20)
+                        .foregroundColor(.black)
+                }
                 
-                    VStack(alignment: .leading, spacing: 10) {
-                        // check if the user has any recipes posted
-                        if usersViewModel.user_recipes.isEmpty {
-                            Text("No recipes yet.")
-                                .foregroundColor(.secondary)
-                                .padding(.top, 10)
-                        } else {
-                            // For every recipe that user has posted, render a navigation link
-                            ForEach(usersViewModel.user_recipes) { recipe in
-                                NavigationLink(destination: RecipeView(recipe: recipe)) {
-                                    Text(recipe.title)
-                                        .font(.headline)
-                                        .foregroundColor(.black)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.gray)
-                                }
-                                .padding(.vertical, 8)
-                                .padding(.horizontal)
-                                .background(Color.gray.opacity(0.1))
-                                .cornerRadius(8)
+                VStack(alignment: .leading, spacing: 10) {
+                    // check if the user has any recipes posted
+                    if usersViewModel.user_recipes.isEmpty {
+                        Text("No recipes yet.")
+                            .foregroundColor(.secondary)
+                            .padding(.top, 10)
+                    } else {
+                        // For every recipe that user has posted, render a navigation link
+                        ForEach(usersViewModel.user_recipes) { recipe in
+                            NavigationLink(destination: RecipeView(recipe: recipe)) {
+                                Text(recipe.title)
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(.gray)
                             }
+                            .padding(.vertical, 8)
+                            .padding(.horizontal)
+                            .background(Color.gray.opacity(0.1))
+                            .cornerRadius(8)
                         }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 10)
-
                 }
+                .padding(.horizontal, 20)
+                .padding(.top, 10)
+                
+                Button(action: {
+                    // Reset auth state to "not attempted"
+                    authViewModel.signInState = .notAttempted
+                    
+                }) {
+                    Text("Log out")
+                        .foregroundColor(.blue)
+                        .font(.system(size: 16, weight: .medium))
+                }
+                .padding(.trailing, 20)
+                .padding(.bottom, 30) // space from bottom edge
+                
             }
+            
         }
     }
+}

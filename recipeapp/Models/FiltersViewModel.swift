@@ -10,6 +10,9 @@ import SwiftUI
 // It's good practice to make ViewModels "final" classes, so that they don't support any inheritance behavior. The compiler can optimize method calls because it knows this. I will change my other classes to be final as well.
 
 // ObservableObject is a protocol that tells Swift it can 'watch' for changes, because this will be our ViewModel which handles View logic, so when the User interacts with the view this class will be the one handling logic and communicating with the View.
+
+// This view model is one of the first view models I made
+// Right now all it accomplishes is being able to change the filters' values in the home view but that doesn't functionally do anything useful
 final class FiltersViewModel: ObservableObject {
     // Properties that can change under this protocol are marked with @Published
     @Published var selectedTypeTag: TypeTags = .dinner // defaults
@@ -56,6 +59,8 @@ final class FiltersViewModel: ObservableObject {
         filterRecipes()
     }
     
+    // old function that used hard coded data from the frontend for one of the assignments
+    // this is no longer useful so I commented it out
     func filterRecipes() {
         // add the values at that key (or empty)
 //        let typeMatches = recipesByTypeTag[selectedTypeTag] ?? []

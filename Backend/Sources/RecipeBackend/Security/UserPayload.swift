@@ -8,16 +8,19 @@
 import Vapor
 import JWT
 
+// the payload that matches what the Go authentication backend uses
 struct UserPayload: JWTPayload, Authenticatable {
-    var sub: SubjectClaim  // email from Go token
-    var iss: IssuerClaim   // issuer
-    var aud: AudienceClaim  // role
+    var sub: SubjectClaim // email from Go token
+    var iss: IssuerClaim // issuer
+    var aud: AudienceClaim // role
     var exp: ExpirationClaim // expiration
     var iat: IssuedAtClaim // issued at
 
+    // function that verifies if the fields are valid
     func verify(using signer: JWTSigner) throws {
         try exp.verifyNotExpired()  // check expiration
-
+            
+        // make sure token was no issued inthe future
         if iat.value > Date() {
             throw JWTError.claimVerificationFailure(
                 name: "iat",
@@ -25,6 +28,7 @@ struct UserPayload: JWTPayload, Authenticatable {
             )
         }
         
+        // check issuer field
         guard iss.value == "Authentication" else {
             throw JWTError.claimVerificationFailure(name: "iss", reason: "Invalid issuer")
         }

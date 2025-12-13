@@ -7,54 +7,60 @@
 
 import SwiftUI
 
-let cuisineOptions = ["American", "Italian", "Mexican", "Asian", "French", "Indian"]
-let typeOptions = ["Breakfast", "Lunch", "Dinner", "Dessert", "Snack", "Side"]
+// https://medium.com/@jpmtech/swiftui-text-input-f9cae9eaca48
+// https://developer.apple.com/documentation/swiftui/textfieldstyle
+// https://www.avanderlee.com/swiftui/picker-styles-color/
 
+let cuisineOptions = ["American", "Italian", "Mexican", "Asian", "French", "Indian"] // list of cuisine strings shown in picker
+let typeOptions = ["Breakfast", "Lunch", "Dinner", "Dessert", "Snack", "Side"] // list of type strings shown in picker
+
+// the form that's seen when a user wants to create their own recipe
 struct CreateRecipeView: View {
-    @EnvironmentObject var usersViewModel: UsersViewModel
-    @EnvironmentObject var authViewModel: AuthViewModel
-    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var usersViewModel: UsersViewModel // access shared user-related functions
+    @EnvironmentObject var authViewModel: AuthViewModel // access authentication information
+    @Environment(\.dismiss) var dismiss // allows closing the view
 
-    @State private var recipe = RecipeDTO()
-    @State private var showingAlert = false
-    @State private var alertMessage = ""
+    @State private var recipe = RecipeDTO() // holds new recipe data being created
+    @State private var showingAlert = false // controls showing alert
+    @State private var alertMessage = "" // message for alert
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
 
-                // Title
+                // title
                 VStack(alignment: .leading) {
                     Text("Recipe Title")
                         .font(.headline)
-                    TextField("Enter recipe title", text: $recipe.title)
+                    TextField("Enter recipe title", text: $recipe.title) // user inputs recipe title
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                 }
 
-                // Cook Time and Servings Row
+                // cook time and servings
                 HStack(spacing: 15) {
                     VStack(alignment: .leading) {
                         Text("Cook Time (min)")
                             .font(.headline)
-                        TextField("Minutes", value: $recipe.cook_time_minutes, format: .number)
+                        TextField("Minutes", value: $recipe.cook_time_minutes, format: .number) // user inputs
                             .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .keyboardType(.numberPad)
+                            .keyboardType(.numberPad) // specifies what keyboard type will pop up
                     }
                     
                     VStack(alignment: .leading) {
                         Text("Servings")
                             .font(.headline)
-                        TextField("Servings", value: $recipe.servings, format: .number)
+                        TextField("Servings", value: $recipe.servings, format: .number) // user inputs
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .keyboardType(.decimalPad)
                     }
                 }
 
-                // Cuisine Tag
+                // cuisine Tag
                 VStack(alignment: .leading) {
                     Text("Cuisine")
                         .font(.headline)
-
+                    
+                    
                     Picker("Select cuisine", selection: $recipe.cuisine_tag) {
                         ForEach(cuisineOptions, id: \.self) { option in
                             Text(option).tag(option)
@@ -69,9 +75,9 @@ struct CreateRecipeView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                     )
+                    
                 }
-
-                // Type Tag
+                // type Tag
                 VStack(alignment: .leading) {
                     Text("Type")
                         .font(.headline)
@@ -92,7 +98,7 @@ struct CreateRecipeView: View {
                     )
                 }
 
-                // Description
+                // description
                 VStack(alignment: .leading) {
                     Text("Description")
                         .font(.headline)
@@ -107,7 +113,7 @@ struct CreateRecipeView: View {
                         )
                 }
 
-                // Ingredients
+                // ingredients
                 VStack(alignment: .leading) {
                     Text("Ingredients")
                         .font(.headline)
@@ -122,7 +128,7 @@ struct CreateRecipeView: View {
                         )
                 }
 
-                // Instructions
+                // instructions
                 VStack(alignment: .leading) {
                     Text("Instructions")
                         .font(.headline)
@@ -136,9 +142,25 @@ struct CreateRecipeView: View {
                                 .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                         )
                 }
+                
+                // content
+                VStack(alignment: .leading) {
+                    Text("Content")
+                        .font(.headline)
+                    TextEditor(text: $recipe.content)
+                        .frame(height: 200)
+                        .padding(8)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                        )
+                }
 
-                // Create Button
+                // the create button
                 Button(action: {
+                    // sets the required fields that are passed into the function call
                     recipe.author_id = authViewModel.user.id.uuidString
                     usersViewModel.createRecipe(newRecipe: recipe)
                     dismiss()
@@ -147,6 +169,7 @@ struct CreateRecipeView: View {
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
+                        // make sure it is blue when the user filled in everything and gray if not
                         .background(
                             (!recipe.title.isEmpty &&
                              !recipe.ingredients.isEmpty &&
@@ -157,10 +180,12 @@ struct CreateRecipeView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
+                // make sure it can only be clicked when the user filled in everything
                 .disabled(
                     recipe.title.isEmpty ||
                     recipe.ingredients.isEmpty ||
                     recipe.instructions.isEmpty ||
+                    recipe.content.isEmpty ||
                     recipe.cook_time_minutes <= 0 ||
                     recipe.servings <= 0
                 )

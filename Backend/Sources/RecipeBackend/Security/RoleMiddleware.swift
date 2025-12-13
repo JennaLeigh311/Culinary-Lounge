@@ -10,8 +10,11 @@
 import Vapor
 import JWT
 
+// https://docs.vapor.codes/advanced/middleware/
 
-//
+
+// checks if the user has the correct roles to access this API
+// THIS IS STILL WORK IN PROGRESS
 struct RoleMiddleware: AsyncMiddleware {
     let allowedRoles: [String] // this will be passed into RoleMiddleware as an argument
 

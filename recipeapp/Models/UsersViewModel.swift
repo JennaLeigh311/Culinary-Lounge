@@ -8,43 +8,47 @@
 import Foundation
 import SwiftUI
 
+// view model to get the user's likes and user's created recipes
 class UsersViewModel: ObservableObject {
     @Published var user_likes: [RecipeDTO] = []
     @Published var user_recipes: [RecipeDTO] = []
     
+    // has access to the authentication view model to watch the user data
     private let auth: AuthViewModel
 
     init(auth: AuthViewModel) {
         self.auth = auth
     }
     
-    // Get all likes from user
+    // function to get all likes from user
     func fetchLikes() {
         
+        // console log for debugging
         print("Fetching all liked recipes of user: \(auth.user.id), \(auth.user.username), \(auth.user.email), \(auth.user.role)")
+        
+        // set url
         let url = URL(string: "http://127.0.0.1:8080/users/\(auth.user.id)/likes")!
         
+        // set req type
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        
-        
+        // start task
         let task = URLSession.shared.dataTask(with: request){ data, response, error in
             if let error = error {
                 print("Error while fetching data:", error)
                 return
             }
     
-            
             guard let data = data else {
                 return
             }
             
+            // console log for debugging
             if let jsonString = String(data: data, encoding: .utf8) {
                 print("RAW RESPONSE FROM user/likes:", jsonString)
             }
-            
             
             do {
                 let decoder = JSONDecoder()

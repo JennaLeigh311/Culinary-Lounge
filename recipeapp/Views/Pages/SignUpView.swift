@@ -8,14 +8,18 @@
 import SwiftUI
 import SwiftData
 
+// keep track of state of sign up
 enum SignUpState {
     case notAttempted
     case success
     case failed
 }
 
+// view to sign up / create user
 struct SignUpView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel
+    // this is all very similar to sign in view so it's uncommented
+    
+    @EnvironmentObject var authViewModel: AuthViewModel // will use the sign up function
     @State var creds = Credentials()
     @FocusState private var focusedField: Field?
 

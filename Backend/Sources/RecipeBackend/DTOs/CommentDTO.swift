@@ -8,6 +8,7 @@
 import Fluent
 import Vapor
 
+// data transfer object of comment
 struct CommentDTO: Content {
     var id: UUID?
     var recipe_id: UUID

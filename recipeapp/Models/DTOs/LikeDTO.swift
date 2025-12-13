@@ -7,6 +7,8 @@
 import SwiftUI
 import Foundation
 
+// WORK IN PROGRESS
+
 //struct LikeDTO: Codable, Identifiable {
 //    var ID: UUID { user_id }
 //    var recipe_id: UUID = UUID()

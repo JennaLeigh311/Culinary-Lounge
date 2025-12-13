@@ -33,10 +33,10 @@ public func configure(_ app: Application) async throws {
         tlsConfiguration: .forClient(certificateVerification: .none)
     ), as: .mysql)
 
-    app.migrations.add(CreateUserMigration())
-    app.migrations.add(CreateRecipeMigration())
-    app.migrations.add(CreateLikeMigration())
-    app.migrations.add(CreateCommentMigration())
+//    app.migrations.add(CreateUserMigration())
+//    app.migrations.add(CreateRecipeMigration())
+//    app.migrations.add(CreateLikeMigration())
+//    app.migrations.add(CreateCommentMigration())
     
     // from tutorial
 //    let privateKey = try String(contentsOfFile:

@@ -14,17 +14,17 @@ struct UserController: RouteCollection {
         let users = routes.grouped("users")
         // SOURCE CHATGPT
 //        let adminProtected = users.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["admin"]))
-        let userProtected = users.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["user","admin"]))
-        
+//        let userProtected = users.grouped(JWTMiddleware(), RoleMiddleware(allowedRoles: ["user","admin"]))
+//        
         users.get(use: self.index) // GET /users -> list all users [ADMIN]
         users.post(use: self.create) // POST /users -> create a new user [PUBLIC but access is controlled by frontend]
         users.group(":userID") { user in
-            userProtected.delete(use: delete) // DELETE /users/:userID -> delete a user [ADMIN OR USER IF DELETING OWN ACCOUNT]
+            user.delete(use: delete) // DELETE /users/:userID -> delete a user [ADMIN OR USER IF DELETING OWN ACCOUNT]
             user.get(use: getOne) // GET /users/:userID -> get a single user [PUBLIC]
             user.get("recipes", "count", use: getRecipeCount) // GET /users/:userID/recipes/count -> get number of recipes posted by this user [PUBLIC]
-            userProtected.get("likes", "count", use: getLikeCount) // GET /users/:userID/likes/count -> get number of likes given by this user [USER OR ADMIN]
+            user.get("likes", "count", use: getLikeCount) // GET /users/:userID/likes/count -> get number of likes given by this user [USER OR ADMIN]
 //            ownerProtected.get("likes", use: getLikes) // GET /users/:userID/likes -> get all liked recipes of user [USER OR ADMIN]
-            userProtected.get("likes", use: getLikes) // GET /users/:userID/likes -> get all liked recipes of user [USER OR ADMIN]
+            user.get("likes", use: getLikes) // GET /users/:userID/likes -> get all liked recipes of user [USER OR ADMIN]
             user.get("recipes", use: getRecipes) // GET /users/:userID/recipes -> get all recipes posted by user [USER OR ADMIN]
         }
     }
@@ -82,6 +82,7 @@ struct UserController: RouteCollection {
         return count
     }
     
+    // handler to get the number of liked recipes
     @Sendable
     func getLikeCount(req: Request) async throws -> Int {
         guard let user = try await User.find(req.parameters.get("userID"), on: req.db) else {
@@ -93,30 +94,55 @@ struct UserController: RouteCollection {
         return count
     }
     
+    // handler to get all liked recipes
     @Sendable
     func getLikes(req: Request) async throws -> [RecipeDTO] {
+//        // console log for error testing
+//        req.logger.info("=== getLikes() called ===")
+//            req.logger.info("URL: \(req.url.string)")
+//            req.logger.info("Method: \(req.method)")
+//            req.logger.info("Headers: \(req.headers)")
+        
         guard let user = try await User.find(req.parameters.get("userID"), on: req.db) else {
+            req.logger.error("User not found for ID: \(req.parameters.get("userID") ?? "nil")")
             throw Abort(.notFound)
         }
-        let likes = try await Like.query(on: req.db)
-            .filter(\Like.$user.$id == user.id!)
-            .with(\.$recipe) // preventing this error: fatalError("Parent relation not eager loaded, use $ prefix to access: \(self.name)")
-            .all()
         
-        let recipes = likes.map{ RecipeDTO(from: $0.recipe) } // 
+//        // debugging
+//        req.logger.info("User found, username: \(user.username), role from DB: \(user.role)")
+//        
+        
+        // query database for likes
+        let likes = try await Like.query(on: req.db)
+            .filter(\Like.$user.$id == user.id!) // where the user id of the like == user id
+            .with(\.$recipe) // preventing this error: fatalError("Parent relation not eager loaded, use $ prefix to access: \(self.name)")
+            .all() // select * from likes
+        
+        let recipes = likes.map{ RecipeDTO(from: $0.recipe) } // map results to return array
         return recipes
     }
     
+    // handler to get all the recipes posted by the user
     @Sendable
     func getRecipes(req: Request) async throws -> [RecipeDTO] {
+//        // console log for error testing
+//        req.logger.info("=== getRecipes() called ===")
+//            req.logger.info("URL: \(req.url.string)")
+//            req.logger.info("Method: \(req.method)")
+//            req.logger.info("Headers: \(req.headers)")
+//
+        // find the user by id
         guard let user = try await User.find(req.parameters.get("userID"), on: req.db) else {
             throw Abort(.notFound)
         }
-        let likes = try await Recipe.query(on: req.db)
-            .filter(\Recipe.$author.$id == user.id!)
+        
+        // query database for all posted recipes
+        let posted_recipes = try await Recipe.query(on: req.db)
+            .filter(\Recipe.$author.$id == user.id!) // where author id == user id
             .all()
         
-        let recipes = likes.map{ RecipeDTO(from: $0) }
+        // map the results to the return array
+        let recipes = posted_recipes.map{ RecipeDTO(from: $0) }
         return recipes
     }
     

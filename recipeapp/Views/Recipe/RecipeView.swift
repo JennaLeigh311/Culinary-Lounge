@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// the actual recipe article
 struct RecipeView: View {
     let recipe: RecipeDTO // argument being passed in when the view is called
     
@@ -22,10 +23,11 @@ struct RecipeView: View {
             Text("Description: \(recipe.description)")
                 .font(.subheadline)
             
-            RecipeBottomMenuView()
             
         }.padding()
-        .background(Color.gray.opacity(0.8))
+            .background(.white)
+        
+        RecipeBottomMenuView(recipe: recipe)
         
     }
 }

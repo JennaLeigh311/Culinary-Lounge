@@ -8,19 +8,17 @@
 
 import SwiftUI
 
-
+// this is what the recipe article will contain to see the content of the recipe, aka the "story"
 struct RecipeContentsView: View {
-    @StateObject private var recipesViewModel = RecipesViewModel()
+    let recipe: RecipeDTO
+    
     var body: some View {
-        ZStack {
-            Rectangle()
-                .fill(.red)
-                .frame(width: 400, height: .infinity)
-                .cornerRadius(10)
-            
-            Text("contents")
-                .cornerRadius(8)
-                .frame(maxWidth: .infinity, minHeight: 1)
+        ScrollView {
+            Text(recipe.content)
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .navigationTitle("Content")
+        .background(Color(.systemGroupedBackground))
     }
 }

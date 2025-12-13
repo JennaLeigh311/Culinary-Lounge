@@ -12,23 +12,27 @@ import SwiftUI
 struct SearchBar: View {
     @Binding var text: String
 
-    @State private var isEditing = false
+    @State private var isEditing = false // this is to trigger the little 'x' button to clear all of the search values
 
     var body: some View {
         HStack {
-
+            
             TextField("Search", text: $text)
+                // styling
                 .padding(7)
                 .padding(.horizontal, 25)
                 .background(Color(.white))
                 .cornerRadius(8)
                 .overlay(
+                    // this is what is inside of the Field
                     HStack {
-                        Image(systemName: "magnifyingglass") // the search icon
+                        // the search icon
+                        Image(systemName: "magnifyingglass")
                             .foregroundColor(.gray)
                             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                             .padding(.leading, 8)
                         
+                        // and the 'x' button to clear search values
                         // this will be true once the user taps the search bar
                         if isEditing {
                             // this button on the right is to clear the search bar of any content

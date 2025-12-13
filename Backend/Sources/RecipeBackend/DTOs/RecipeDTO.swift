@@ -7,6 +7,7 @@
 import Fluent
 import Vapor
 
+// data transfer object of recipe
 struct RecipeDTO: Content {
     var id: UUID?
     var author_id: UUID

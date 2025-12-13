@@ -8,7 +8,9 @@
 import Foundation
 import SwiftUI
 
-
+// this is the recipe data transfer object
+// it will be passed in from the APIs and decoded in the app to see recipes
+// it will also be passed into the create recipe API
 struct RecipeDTO: Codable, Identifiable {
     var ID: UUID { id! }
     var id: UUID? = nil

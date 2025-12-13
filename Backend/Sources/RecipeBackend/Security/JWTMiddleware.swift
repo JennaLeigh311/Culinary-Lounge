@@ -6,6 +6,8 @@
 //
 
 // SOURCE CODE: GENERATE BY CHATGPT
+// to understand this better I used:
+// https://docs.vapor.codes/advanced/middleware/
 
 import Vapor
 import JWT
