@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+// https://anjalijoshi2426.medium.com/fetch-and-display-api-data-on-list-using-swiftui-13fff61e8826
+
 // This is the View model that handles the logic of authentication
 // It is observable so that other views can see what the state of authentication is in the app
 class AuthViewModel: ObservableObject {
