@@ -13,7 +13,7 @@ class RecipesViewModel: ObservableObject {
     
     @Published var recipes: [RecipeDTO] = []
     init() {
-        fetchRecipes()
+        // Recipes are now loaded lazily when the home page appears
     }
     
     // Get a recipe from all recipes list
@@ -60,5 +60,31 @@ class RecipesViewModel: ObservableObject {
         task.resume()
     }
     
+    // Async version for pull-to-refresh functionality - learning about async/await 
+    func fetchRecipesAsync() async {
+        let url = URL(string: "http://127.0.0.1:8080/recipes")!
+        
+        // set request type
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET" 
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // Using async/await to handle the network call more cleanly
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            
+            let decodedData = try decoder.decode([RecipeDTO].self, from: data)
+            
+            // Update the UI on the main thread after fetching data
+            DispatchQueue.main.async {
+                self.recipes = decodedData
+            }
+        } catch {
+            print("Error fetching recipes:", error)
+        }
+    }
     
 }

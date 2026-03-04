@@ -22,6 +22,7 @@ struct HomeView: View {
     @EnvironmentObject var filtersViewModel: FiltersViewModel // for filtering recipes
     @EnvironmentObject var recipesViewModel: RecipesViewModel // this is for rendering recipes into recipe cards
     @State private var searchText = "" // this variable is to pass into the search bar view component
+    @State private var hasLoadedRecipes = false // tracks if recipes have been loaded to avoid reloading on every view appear
     
     var body: some View {
         VStack (spacing: 15){
@@ -53,7 +54,7 @@ struct HomeView: View {
             // the filters
             FiltersView()
 
-            // a scrollable view
+            // a scrollable view with pull-to-refresh
             ScrollView {
             // in the future I need to have some logic for this to choose which ones to show (based on tags)
             // and also iterate through them automatically not manually
@@ -67,6 +68,17 @@ struct HomeView: View {
                         }
                     }
                 }
+            }
+            .refreshable {
+                // Allow user to manually refresh recipes by pulling down
+                await recipesViewModel.fetchRecipesAsync()
+            }
+        }
+        .onAppear {
+            // Load recipes only once on first appearance
+            if !hasLoadedRecipes {
+                recipesViewModel.fetchRecipes()
+                hasLoadedRecipes = true
             }
         }
     }
